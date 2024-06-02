@@ -1,0 +1,114 @@
+/* Resetting default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+     background-image: url('b2.jpg'); 
+    background-size: cover;
+    background-position: center;
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Updated font for modern look */
+    background-color: #f4f7f6; /* Soft light grey for background */
+    line-height: 1.6;
+    color: #333;
+    padding: 0px;
+}
+
+/* Header Styles */
+header {
+    background-color: #004250 ;  /* Soft dark grey for header */
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Main Content Styles */
+main {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: calc(100vh - 160px); /* Ensures main content covers full viewport height minus header and footer */
+}
+
+/* Hero Section Styles */
+.hero {
+  
+    height: 55vh; /* Adjust as needed */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+   
+}
+
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+}
+
+.hero p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block;
+    background-color: #efb836; /* Soft orange for button */
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.btn:hover {
+    background-color: #fb8c00; /* Slightly darker orange on hover */
+    transform: translateY(-2px); /* Adds a subtle lift on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds shadow on hover for depth */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #004250 ;  /* Soft dark grey for footer */
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3); /* Adds shadow for footer elevation */
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    .hero h2 {
+        font-size: 2.5rem;
+    }
+    .hero p {
+        font-size: 1.2rem;
+    }
+    .btn {
+        padding: 12px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h2 {
+        font-size: 2rem;
+    }
+    .hero p {
+        font-size: 1rem;
+    }
+    .btn {
+        padding: 10px 20px;
+    }
+}

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{../css/file.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload Page</title>
+</head>
+<body>
+    <div class="upload-form">
+        <h2>Upload a File</h2>
+        <form th:action="@{/request/create}" th:object="${reuqesrDto}" method="POST" enctype="multipart/form-data">
+            <label for="fileUpload">Choose file:</label>
+            <input type="file" id="fileUpload" th:field="*{file}" name="file" required>
+            <p th:if="${#fields.hasErrors('file')}" th:errorclass="text-danger" th:errors="*{file}"></p>
+
+            <label for="fileDescription">File description:</label>
+            <textarea id="fileDescription" th:field="*{description}" name="description" rows="4" placeholder="Enter a description for the file..." required></textarea>
+            <p th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger" th:errors="*{description}"></p>
+
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+</body>
+</html>

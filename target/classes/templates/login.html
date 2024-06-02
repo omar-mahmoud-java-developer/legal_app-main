@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{../css/login.css}">
+    <title>Login</title>
+   
+ 
+</head>
+      <body>
+        <div class="container">
+          <div class="message" th:if="${param.error}">
+            Invalid Username or Password
+         </div>
+         <div class="message" th:if="${param.logout}">
+            Logout Successfuly
+         </div>
+          <div class="forms-container">
+            
+            <div class="signin-signup">
+              <form 
+         th:action="@{/login}"
+         method="post"
+         class="sign-in-form">
+                <h2 class="title">Log In</h2>
+                <div class="input-field">
+                  <i class="fas fa-user"></i>
+                  <input  type="email" id="username" name="username" placeholder="Enter your email" required>
+                </div>
+                <div class="input-field">
+                  <i class="fas fa-lock"></i>
+                  <input  type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+                <input type="submit" value="Register" class="btn solid" />
+
+                
+              </form>
+    
+
+            </div>
+          </div>
+          <div class="panels-container">
+
+            <div class="panel left-panel">
+              <div class="erc">
+                <h1  >ERC</h1>
+              </div>
+              <div class="nc">
+                <h3 >Egyption Resorts Company</h3>
+
+              </div>
+              <div class="app">
+                <h3 >legal Requests App</h3>
+              </div>
+           
+            
+            
+            
+            
+
+            
+            
+              
+                <img src="/new.png" class="image" alt="">
+            </div>
+    
+            
+          </div>
+        </div>
+          
+        <script src="./app.js"></script>
+      </body>
+    </html> 

@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{../css/editfile.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit File</title>
+</head>
+<body>
+    <div class="edit-form">
+        <h2>Edit File</h2>
+        <form th:action="@{/request/edit(id=${requestId})}" th:object="${reuqesrDto}" method="POST" enctype="multipart/form-data">
+            <label for="fileUpload">Choose new file (if needed): </label>
+            <input type="file" id="fileUpload" th:field="*{file}" name="file">
+            <p th:if="${#fields.hasErrors('file')}" th:errorclass="text-danger" th:errors="*{file}"></p>
+
+            <label for="fileDescription">File description:</label>
+            <textarea id="fileDescription" th:field="*{description}" name="description" rows="4" placeholder="Enter a description for the file..."></textarea>
+            <p th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger" th:errors="*{description}"></p>
+
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>

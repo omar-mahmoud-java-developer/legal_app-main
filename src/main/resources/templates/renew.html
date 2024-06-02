@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{../styles.css}">
+    <title>Register</title>
+</head>
+<body>
+    <div class="container">
+        <div class="forms-container">
+            <div class="signin-signup">
+                <form th:action="@{/registration}" method="post" role="form"
+                th:object="${user}" class="sign-up-form">
+                    <h2 class="title">Registration </h2>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input th:field="*{fullname}" type="text" placeholder="Username" name="username" required />
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input th:field="*{email}" type="email" placeholder="Email" name="email" required />
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input th:field="*{password}" type="password" placeholder="Password" name="password" required />
+                    </div>
+                  
+                    <input type="submit" value="Register" class="btn solid" />
+                </form>
+            </div>
+        </div>
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="erc">
+                    <h1>ERC</h1>
+                </div>
+                <div class="nc">
+                    <h3>Egyption Resorts Company</h3>
+                </div>
+                <div class="app">
+                    <h3>Legal Requests App</h3>
+                </div>
+                <img src="/new.png" class="image" alt="">
+            </div>
+        </div>
+    </div>
+    <script src="./app.js"></script>
+</body>
+</html>

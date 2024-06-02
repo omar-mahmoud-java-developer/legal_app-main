@@ -11,6 +11,8 @@ public class ReuqesrDto {
 
      private MultipartFile file;
 
+
+
     public String getDescription() {
       return description;
     }
@@ -27,8 +29,7 @@ public class ReuqesrDto {
       this.file = file;
     }
 
-// @CreatedDate
-//  private Date requestData; 
+
    
 //      @Enumerated (EnumType.STRING)
 //      private Response pendingJustication;

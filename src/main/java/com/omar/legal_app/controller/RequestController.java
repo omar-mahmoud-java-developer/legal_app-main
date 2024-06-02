@@ -1,5 +1,6 @@
 package com.omar.legal_app.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,11 @@ public class RequestController {
             return "upload";
         }
         RequestEntity requestEntity = new RequestEntity();
+        Date rDate =new Date();
         requestEntity.setDescription(reuqesrDto.getDescription());
+        requestEntity.setRequestDate(rDate);
+        
+    
         requestEntity.setFileName(reuqesrDto.getFile().getOriginalFilename());
         requestRepo.save(requestEntity);
 

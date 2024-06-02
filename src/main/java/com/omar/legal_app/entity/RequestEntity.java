@@ -1,4 +1,6 @@
 package com.omar.legal_app.entity;
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +16,8 @@ public class RequestEntity {
     private Integer id;
     @Column(columnDefinition="TEXT")
     private String description;
-    // private Date requestData;   
+
+    private Date  requestDate;   
     // @Enumerated (EnumType.STRING)
     // private Response pendingJustication;
     //  private Date pendingData; 
@@ -43,5 +46,13 @@ public class RequestEntity {
     }
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public Date  getRequestDate() {
+        return requestDate;
+    }
+
+    public void setRequestDate(Date  requestDate) {
+        this.requestDate = requestDate;
     }
 }

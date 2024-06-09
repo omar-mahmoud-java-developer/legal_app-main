@@ -58,7 +58,7 @@ button[type="submit"] {
 }
 
 button[type="submit"]:hover {
-    background-color: #00303d; /* Darker teal on hover */
+    background-color: #0a7c9c; /* Darker teal on hover */
 }
 
 .error-message {
@@ -80,23 +80,28 @@ button[type="submit"]:hover {
 }
 
 a{
+    list-style: none;
+    outline: none;
     position: relative;
         display: block;
         text-align: center;
         margin-top: 20px; /* Add some space between the form and the links */
         width: 55%;
-        right:-86px;
+        right:-90px;
         background: #004250; /* Dark teal button */
         border: none;
-        outline: none;
+      
         padding: 10px 0;
         border-radius: 25px;
         color: #fff;
         font-size: 1rem;
         cursor: pointer;
-        transition: 0.3s;
+        transition: 0.5s;
+        text-decoration: none;
     }
     a:hover{
       background-color: #F2C864;
+      transition: 0.5s;
+    
     }
     

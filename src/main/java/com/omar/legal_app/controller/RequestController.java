@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,8 +36,8 @@ public class RequestController {
     @GetMapping("/list")
     public String showRequestList(Model model, Principal principal) {
         String username = principal.getName();
-        User currentUser = userRepository.findByEmail(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User currentUser = userRepository.findByEmail(username);
+            //.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         List<RequestEntity> userRequests = requestRepo.findByUsers(currentUser);
         model.addAttribute("request", userRequests);
@@ -70,8 +69,8 @@ public class RequestController {
 
         // Set the user
         String username = principal.getName();
-        User currentUser = userRepository.findByEmail(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User currentUser = userRepository.findByEmail(username);
+           // .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         requestEntity.getUsers().add(currentUser);
 
         requestRepo.save(requestEntity);

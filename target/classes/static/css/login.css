@@ -149,3 +149,44 @@ form .title {
     font-size: 1.5rem;
     color: #F2C864; /* Yellow text for other headers */
 }
+
+
+
+.forgot-password-button {
+    display: inline-block;
+    margin-top: 20px; /* Adjusted margin top */
+    padding: 10px 20px;
+    border: 2px solid #004250; /* Dark teal border */
+    border-radius: 25px;
+    font-size: 0.9rem;
+    color: #004250; /* Dark teal text */
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.register-button{
+
+    display: inline-block;
+    margin-top: 20px; /* Adjusted margin top */
+    padding: 10px 20px;
+    border: 2px solid #004250; /* Dark teal border */
+    border-radius: 25px;
+    font-size: 0.9rem;
+    color: #004250; /* Dark teal text */
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+.register-button:hover, .forgot-password-button:hover {
+    background-color: #004250; /* Dark teal background on hover */
+    color: #fff; /* White text on hover */
+}
+
+.register-button a, .forgot-password-button a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.signin-signup {
+    width: 100%;
+    text-align: center; /* Center the content horizontally */
+}

@@ -1,0 +1,102 @@
+body {
+    background: #D7E8F2; /* Light blue background */
+    font-family: 'Poppins', sans-serif; /* Ensure consistent font */
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px; /* Match the border-radius from login.css */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Match the box-shadow from login.css */
+    margin: 10px;
+    width: 400px; /* Adjust the width as per your preference */
+}
+
+h2 {
+    text-align: center;
+    color: #004250; /* Dark teal text */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #004250; /* Dark teal text */
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 25px; /* Match the border-radius from login.css */
+    background: #D7E8F2; /* Light blue input background */
+    color: #004250; /* Dark teal text */
+    font-size: 1rem;
+    margin-bottom: 20px; /* Add some space between input fields */
+}
+
+button[type="submit"] {
+    background-color: #004250; /* Dark teal button */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px; /* Match the border-radius from login.css */
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #00303d; /* Darker teal on hover */
+}
+
+.error-message {
+    background-color: #F2C864; /* Yellow background for error messages */
+    color: #004250; /* Dark teal text */
+    padding: 10px;
+    border-radius: 25px; /* Match the border-radius from login.css */
+    text-align: center;
+    margin-bottom: 20px; /* Add some space between messages */
+}
+
+.success-message {
+    background-color: #BFD9E5; /* Light blue background for success messages */
+    color: #004250; /* Dark teal text */
+    padding: 10px;
+    border-radius: 25px; /* Match the border-radius from login.css */
+    text-align: center;
+    margin-bottom: 20px; /* Add some space between messages */
+}
+
+a{
+    position: relative;
+        display: block;
+        text-align: center;
+        margin-top: 20px; /* Add some space between the form and the links */
+        width: 55%;
+        right:-86px;
+        background: #004250; /* Dark teal button */
+        border: none;
+        outline: none;
+        padding: 10px 0;
+        border-radius: 25px;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    a:hover{
+      background-color: #F2C864;
+    }
+    

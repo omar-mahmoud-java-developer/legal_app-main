@@ -23,12 +23,13 @@
                     <th class="table-header">ID</th>
                     <th class="table-header">Description</th>
                     <th class="table-header">Request Date</th>
-                    <!-- <th class="table-header">Pending Justification</th>
-                    <th class="table-header">Pending Date</th>
+                    <th class="table-header">Pending Justification</th>
+                     <!--<th class="table-header">Pending Date</th>
                     <th class="table-header">Request Response</th>
                     <th class="table-header">Completion Date</th>
                     <th class="table-header">Cancellation Date</th> -->
                     <th class="table-header">File Name</th>
+                    <th class="table-header">Edit & Delete</th>
                     <!-- <th class="table-header">Actions</th> -->
                 </tr>
             </thead>
@@ -40,8 +41,8 @@
                     <!-- <td class="table-cell" th:text="${request.requestDate.toString().substring(0,10)}"></td> -->
                     <td class="table-cell" th:text="${request.requestDate}"></td>
                   
-                    <!-- <td class="table-cell" th:text="${request.pendingJustication}"></td>
-                    <td class="table-cell" th:text="${request.pendingData}"></td>
+                   <td class="table-cell" th:text="${request.response}"></td>
+                     <!-- <td class="table-cell" th:text="${request.pendingData}"></td>
                     <td class="table-cell" th:text="${request.requestResponse}"></td>
                     <td class="table-cell" th:text="${request.completionData}"></td>
                     <td class="table-cell" th:text="${request.cancelationData}"></td> -->

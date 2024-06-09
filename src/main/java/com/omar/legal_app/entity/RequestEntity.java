@@ -25,6 +25,8 @@ public class RequestEntity {
     private Date requestDate;
 
     private String fileName;
+    @Column(name="Response")
+    private Response response;
 
     @ManyToMany
     @JoinTable(
@@ -74,5 +76,13 @@ public class RequestEntity {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Response getResponse() {
+        return response;
+    }
+
+    public void setResponse(Response response) {
+        this.response = response;
     }
 }

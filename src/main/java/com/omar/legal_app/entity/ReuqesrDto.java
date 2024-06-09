@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReuqesrDto {
 
    private String description;
+   private Response response;
 
      private MultipartFile file;
 
@@ -45,6 +46,14 @@ public class ReuqesrDto {
 //     @CreatedDate
 
 //      private Date cancelationData;
+
+    public Response getResponse() {
+        return response;
+    }
+
+    public void setResponse(Response response) {
+        this.response = response;
+    }
 
    
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.omar.legal_app.entity.RequestEntity;
+import com.omar.legal_app.entity.Response;
 import com.omar.legal_app.entity.ReuqesrDto;
 import com.omar.legal_app.entity.User;
 import com.omar.legal_app.repository.RequestRepo;
@@ -66,6 +67,7 @@ public class RequestController {
         requestEntity.setDescription(reuqesrDto.getDescription());
         requestEntity.setRequestDate(rDate);
         requestEntity.setFileName(reuqesrDto.getFile().getOriginalFilename());
+        requestEntity.setResponse(Response.PENDING);
 
         // Set the user
         String username = principal.getName();

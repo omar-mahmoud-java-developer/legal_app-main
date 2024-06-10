@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 @Entity
 @Table(name = "request")
@@ -36,6 +37,10 @@ public class RequestEntity {
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> users = new HashSet<>();
+
+    @OneToOne
+    AdminRequestEntity adminRequestEntity;
+  
     // Getters and setters
     public Integer getId() {
         return id;

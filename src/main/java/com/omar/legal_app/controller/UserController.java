@@ -51,7 +51,7 @@ public class UserController {
 	public String adminPage (Model model, Principal principal) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
 		model.addAttribute("user", userDetails);
-		return "admin";
+		return "index";
 	}
 
 }

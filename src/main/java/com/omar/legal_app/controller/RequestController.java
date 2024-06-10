@@ -1,10 +1,20 @@
 package com.omar.legal_app.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +33,7 @@ import com.omar.legal_app.repository.RequestRepo;
 import com.omar.legal_app.repository.UserRepository;
 
 import jakarta.validation.Valid;
+
 
 @Controller
 @RequestMapping("/request")
@@ -45,6 +56,24 @@ public class RequestController {
         return "om"; // Ensure this is the correct view name
     }
 
+    @GetMapping("/alist")
+    public String showRequestAllList(Model model) {
+       
+
+        List<RequestEntity> userRequests = requestRepo.findAll();
+        model.addAttribute("request", userRequests);
+        return "request"; // Ensure this is the correct view name
+    }
+
+
+
+
+
+
+
+
+
+    
     @GetMapping("/create")
     public String showRequest(Model model) {
         ReuqesrDto reuqesrDto = new ReuqesrDto();
@@ -75,6 +104,25 @@ public class RequestController {
         User currentUser = userRepository.findByEmail(username);
            // .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         requestEntity.getUsers().add(currentUser);
+
+        
+ // Save the file to the server
+       String uploadDir = "uploaded-files/";
+        Path uploadPath = Paths.get(uploadDir);
+        if (!Files.exists(uploadPath)) {
+            try {
+                Files.createDirectories(uploadPath);
+            } catch (IOException e) {
+                throw new RuntimeException("Could not create upload directory!", e);
+            }
+        }
+
+        try {
+            Path filePath = uploadPath.resolve(reuqesrDto.getFile().getOriginalFilename());
+            Files.copy(reuqesrDto.getFile().getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save file", e);
+        }
 
         requestRepo.save(requestEntity);
 
@@ -135,4 +183,53 @@ public class RequestController {
 
         return "redirect:/request/list";
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @GetMapping("/download")
+    public ResponseEntity<Resource> downloadFile(@RequestParam String fileName) {
+        String uploadDir = "uploaded-files/";
+        Path filePath = Paths.get(uploadDir).resolve(fileName).normalize();
+        Resource resource;
+        try {
+            resource = new UrlResource(filePath.toUri());
+            if (!resource.exists()) {
+                throw new RuntimeException("File not found " + fileName);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("File not found " + fileName, e);
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

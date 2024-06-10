@@ -66,6 +66,7 @@ public class RequestController {
         Date rDate = new Date();
         requestEntity.setDescription(reuqesrDto.getDescription());
         requestEntity.setRequestDate(rDate);
+        requestEntity.setResponseDate(rDate);
         requestEntity.setFileName(reuqesrDto.getFile().getOriginalFilename());
         requestEntity.setResponse(Response.PENDING);
 

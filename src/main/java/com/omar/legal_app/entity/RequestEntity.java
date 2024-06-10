@@ -23,6 +23,7 @@ public class RequestEntity {
     private String description;
 
     private Date requestDate;
+    private Date responseDate;
 
     private String fileName;
     @Column(name="Response")
@@ -84,5 +85,13 @@ public class RequestEntity {
 
     public void setResponse(Response response) {
         this.response = response;
+    }
+
+    public Date getResponseDate() {
+        return responseDate;
+    }
+
+    public void setResponseDate(Date responseDate) {
+        this.responseDate = responseDate;
     }
 }

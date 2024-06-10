@@ -25,6 +25,7 @@ public class RequestEntity {
 
     private Date requestDate;
     private Date responseDate;
+    private String comment;
 
     private String fileName;
     @Column(name="Response")
@@ -98,5 +99,13 @@ public class RequestEntity {
 
     public void setResponseDate(Date responseDate) {
         this.responseDate = responseDate;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

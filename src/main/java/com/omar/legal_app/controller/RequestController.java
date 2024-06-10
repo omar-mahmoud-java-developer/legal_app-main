@@ -64,15 +64,6 @@ public class RequestController {
         model.addAttribute("request", userRequests);
         return "request"; // Ensure this is the correct view name
     }
-
-
-
-
-
-
-
-
-
     
     @GetMapping("/create")
     public String showRequest(Model model) {
@@ -81,6 +72,9 @@ public class RequestController {
         return "upload";
     }
 
+
+
+    
     @PostMapping("/create")
     public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, BindingResult result, Model model, Principal principal) {
         if (reuqesrDto.getFile().isEmpty()) {
@@ -96,6 +90,7 @@ public class RequestController {
         requestEntity.setDescription(reuqesrDto.getDescription());
         requestEntity.setRequestDate(rDate);
         requestEntity.setResponseDate(rDate);
+        requestEntity.setComment(reuqesrDto.getComment());
         requestEntity.setFileName(reuqesrDto.getFile().getOriginalFilename());
         requestEntity.setResponse(Response.PENDING);
 
@@ -123,6 +118,7 @@ public class RequestController {
         } catch (IOException e) {
             throw new RuntimeException("Failed to save file", e);
         }
+        
 
         requestRepo.save(requestEntity);
 

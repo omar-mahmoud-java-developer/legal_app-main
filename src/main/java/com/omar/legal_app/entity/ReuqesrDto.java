@@ -11,7 +11,7 @@ public class ReuqesrDto {
    private Response response;
 
      private MultipartFile file;
-
+     private String comment;
 
 
     public String getDescription() {
@@ -53,6 +53,14 @@ public class ReuqesrDto {
 
     public void setResponse(Response response) {
         this.response = response;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
    

@@ -21,6 +21,7 @@
             <thead>
                 <tr>
                     <th class="table-header">ID</th>
+                    <th class="table-header">Name</th>
                     <th class="table-header">Description</th>
                     <th class="table-header">Request Date</th>
                     <th class="table-header">Pending Justification</th>
@@ -38,10 +39,14 @@
                 <!-- Loop through requests and display each one -->
                 <tr th:each="request: ${request}">
                     <td class="table-cell" th:text="${request.id}"></td>
+                    <td class="table-cell" th:text="${request.users[0].fullname}"></td>
                     <td class="table-cell" th:text="${request.description}"></td>
                     <!-- <td class="table-cell" th:text="${request.requestDate.toString().substring(0,10)}"></td> -->
                     <td class="table-cell" th:text="${request.requestDate}"></td>
-                  
+               
+                            <!-- Add other response options as needed -->
+                      
+                    </td>
                    <td class="table-cell" th:text="${request.response}"></td>
                    <td class="table-cell" th:text="${request.responseDate}"></td>
                      <!-- <td class="table-cell" th:text="${request.pendingData}"></td>

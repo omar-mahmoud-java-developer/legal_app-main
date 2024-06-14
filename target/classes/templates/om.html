@@ -2,19 +2,17 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{../css/re.css}">
     <title>Request List</title>
-
 </head>
-<header id="main-header">
-    <h1 id="header-title">Request List</h1>
-    <a href="create" class="btn" id="get-started-btn">Get Started</a>
-</header>
 
 <body>
+    <header id="main-header">
+        <h1 id="header-title">Request List</h1>
+        <a href="/request/create" class="btn" id="get-started-btn">Get Started</a>
+    </header>
 
     <div id="content">
         <table id="request-table">
@@ -24,14 +22,9 @@
                     <th class="table-header">Description</th>
                     <th class="table-header">Request Date</th>
                     <th class="table-header">Pending Justification</th>
-                    <th class="table-header">reques Date</th>
-                     <!--<th class="table-header">Pending Date</th>
-                    <th class="table-header">Request Response</th>
-                    <th class="table-header">Completion Date</th>
-                    <th class="table-header">Cancellation Date</th> -->
+                    <th class="table-header">Response Date</th>
                     <th class="table-header">File Name</th>
                     <th class="table-header">Edit & Delete</th>
-                    <!-- <th class="table-header">Actions</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -39,27 +32,14 @@
                 <tr th:each="request: ${request}">
                     <td class="table-cell" th:text="${request.id}"></td>
                     <td class="table-cell" th:text="${request.description}"></td>
-                    <!-- <td class="table-cell" th:text="${request.requestDate.toString().substring(0,10)}"></td> -->
                     <td class="table-cell" th:text="${request.requestDate}"></td>
-                  
-                   <td class="table-cell" th:text="${request.response}"></td>
-                   <td class="table-cell" th:text="${request.responseDate}"></td>
-                     <!-- <td class="table-cell" th:text="${request.pendingData}"></td>
-                    <td class="table-cell" th:text="${request.requestResponse}"></td>
-                    <td class="table-cell" th:text="${request.completionData}"></td>
-                    <td class="table-cell" th:text="${request.cancelationData}"></td> -->
-                    <td class="table-cell" th:text="${request.fileName}"></td>
+                    <td class="table-cell" th:text="${request.selectedOption}"></td>
+                    <td class="table-cell" th:text="${request.responseDate}"></td>
+                    <td class="table-cell" th:text="${request.fileNames}"></td>
                     <td class="table-cell actions-cell">
-                        <a class="link-edit"
-                        th:href= "@{/request/edit(id=${request.id})}" 
-                        
-                        
-                        >Edit</a>
-                        <a  class="link-delete"  
-                        th:href="@{/request/delete(id=${request.id})}"
-                        onclick="return confirm ('Are you sure?')"
-                        
-                        >Delete</a>
+                        <a class="link-edit" th:href="@{/request/edit(id=${request.id})}">Edit</a>
+                        <a class="link-delete" th:href="@{/request/delete(id=${request.id})}"
+                            onclick="return confirm('Are you sure?')">Delete</a>
                     </td>
                 </tr>
             </tbody>

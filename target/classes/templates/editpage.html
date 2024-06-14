@@ -10,9 +10,10 @@
     <div class="edit-form">
         <h2>Edit File</h2>
         <form th:action="@{/request/edit(id=${requestId})}" th:object="${reuqesrDto}" method="POST" enctype="multipart/form-data">
-            <label for="fileUpload">Choose new file (if needed): </label>
-            <input type="file" id="fileUpload" th:field="*{file}" name="file">
-            <p th:if="${#fields.hasErrors('file')}" th:errorclass="text-danger" th:errors="*{file}"></p>
+          
+                <label for="fileUpload">Choose files:</label>
+                <input type="file" id="fileUpload" th:field="*{files}" name="files" multiple required>
+                <p th:if="${#fields.hasErrors('files')}" th:errorclass="text-danger" th:errors="*{files}"></p>
 
             <label for="fileDescription">File description:</label>
             <textarea id="fileDescription" th:field="*{description}" name="description" rows="4" placeholder="Enter a description for the file..."></textarea>

@@ -8,14 +8,14 @@
 </head>
 <body>
     <div class="upload-form">
-        <h2>Upload a File</h2>
+        <h2>Upload Files</h2>
         <form th:action="@{/request/create}" th:object="${reuqesrDto}" method="POST" enctype="multipart/form-data">
-            <label for="fileUpload">Choose file:</label>
-            <input type="file" id="fileUpload" th:field="*{file}" name="file" required>
-            <p th:if="${#fields.hasErrors('file')}" th:errorclass="text-danger" th:errors="*{file}"></p>
+            <label for="fileUpload">Choose files:</label>
+            <input type="file" id="fileUpload" th:field="*{files}" name="files" multiple required>
+            <p th:if="${#fields.hasErrors('files')}" th:errorclass="text-danger" th:errors="*{files}"></p>
 
             <label for="fileDescription">File description:</label>
-            <textarea id="fileDescription" th:field="*{description}" name="description" rows="4" placeholder="Enter a description for the file..." required></textarea>
+            <textarea id="fileDescription" th:field="*{description}" name="description" rows="4" placeholder="Enter a description for the files..." required></textarea>
             <p th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger" th:errors="*{description}"></p>
 
             <button type="submit">Upload</button>

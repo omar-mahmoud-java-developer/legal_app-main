@@ -1,6 +1,8 @@
 package com.omar.legal_app.entity;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -11,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 @Entity
 @Table(name = "request")
@@ -19,18 +20,23 @@ public class RequestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+
+
+
     
+   
+    @Column(name = "selected_option")
+    private String selectedOption;
+   @Column(columnDefinition="TEXT")
+    private String Comments;
     @Column(columnDefinition="TEXT")
     private String description;
-
     private Date requestDate;
     private Date responseDate;
-    private String comment;
-
-    private String fileName;
+   private List<String> fileNames = new ArrayList<>();
     @Column(name="Response")
     private Response response;
-
     @ManyToMany
     @JoinTable(
         name = "user_requests",
@@ -39,8 +45,7 @@ public class RequestEntity {
     )
     private Set<User> users = new HashSet<>();
 
-    @OneToOne
-    AdminRequestEntity adminRequestEntity;
+ 
   
     // Getters and setters
     public Integer getId() {
@@ -67,14 +72,13 @@ public class RequestEntity {
         this.requestDate = requestDate;
     }
 
-    public String getFileName() {
-        return fileName;
+    public List<String> getFileNames() {
+        return fileNames;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setFileNames(List<String> fileNames) {
+        this.fileNames = fileNames;
     }
-
     
 
     public Set<User> getUsers() {
@@ -101,11 +105,37 @@ public class RequestEntity {
         this.responseDate = responseDate;
     }
 
-    public String getComment() {
-        return comment;
+    public String getSelectedOption() {
+        return selectedOption;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setSelectedOption(String selectedOption) {
+        this.selectedOption = selectedOption;
     }
+
+
+
+    public String getComments() {
+        return Comments;
+    }
+
+    public void setComments(String Comments) {
+        this.Comments = Comments;
+    }
+
+
+    private String folderName;
+
+    // Getters and setters for folderName
+    public String getFolderName() {
+        return folderName;
+    }
+
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
+    }
+
+  
+
+
 }

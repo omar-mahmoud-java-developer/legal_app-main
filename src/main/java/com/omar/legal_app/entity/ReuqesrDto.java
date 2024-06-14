@@ -1,51 +1,48 @@
 package com.omar.legal_app.entity;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
-
-
-
 
 public class ReuqesrDto {
 
-   private String description;
-   private Response response;
-
-     private MultipartFile file;
-     private String comment;
-
+    private String description;
+    private String comments;
+    private String selectedOption;
+    private List<MultipartFile> files;
+    private Response response;
 
     public String getDescription() {
-      return description;
+        return description;
     }
 
     public void setDescription(String description) {
-      this.description = description;
+        this.description = description;
     }
 
-    public MultipartFile getFile() {
-      return file;
+    public String getComments() {
+        return comments;
     }
 
-    public void setFile(MultipartFile file) {
-      this.file = file;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
+    public String getSelectedOption() {
+        return selectedOption;
+    }
 
-   
-//      @Enumerated (EnumType.STRING)
-//      private Response pendingJustication;
-//     @CreatedDate
+    public void setSelectedOption(String selectedOption) {
+        this.selectedOption = selectedOption;
+    }
 
-//       private Date pendingData;
-      
-//      @Enumerated (EnumType.STRING)
-//       private Response  requestResponse;
-//     @CreatedDate
+    public List<MultipartFile> getFiles() {
+        return files;
+    }
 
-//        private Date completionData;
-//     @CreatedDate
-
-//      private Date cancelationData;
+    public void setFiles(List<MultipartFile> files) {
+        this.files = files;
+    }
 
     public Response getResponse() {
         return response;
@@ -55,15 +52,19 @@ public class ReuqesrDto {
         this.response = response;
     }
 
-    public String getComment() {
-        return comment;
+
+
+
+
+
+    private String folderName;
+
+    // Getters and setters for folderName
+    public String getFolderName() {
+        return folderName;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
     }
-
-   
-
-
 }

@@ -6,12 +6,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.omar.legal_app.entity.RequestEntity;
 import com.omar.legal_app.entity.Response;
@@ -75,56 +80,52 @@ public class RequestController {
 
 
     
-    @PostMapping("/create")
-    public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, BindingResult result, Model model, Principal principal) {
-        if (reuqesrDto.getFile().isEmpty()) {
-            result.addError(new FieldError("reuqesrDto", "file", "File is required"));
-        }
-        if (result.hasErrors()) {
-            model.addAttribute("reuqesrDto", reuqesrDto);
-            return "upload";
-        }
-
-        RequestEntity requestEntity = new RequestEntity();
-        Date rDate = new Date();
-        requestEntity.setDescription(reuqesrDto.getDescription());
-        requestEntity.setRequestDate(rDate);
-        requestEntity.setResponseDate(rDate);
-        requestEntity.setComment(reuqesrDto.getComment());
-        requestEntity.setFileName(reuqesrDto.getFile().getOriginalFilename());
-        requestEntity.setResponse(Response.PENDING);
-
-        // Set the user
-        String username = principal.getName();
-        User currentUser = userRepository.findByEmail(username);
-           // .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        requestEntity.getUsers().add(currentUser);
-
-        
- // Save the file to the server
-       String uploadDir = "uploaded-files/";
-        Path uploadPath = Paths.get(uploadDir);
-        if (!Files.exists(uploadPath)) {
-            try {
-                Files.createDirectories(uploadPath);
-            } catch (IOException e) {
-                throw new RuntimeException("Could not create upload directory!", e);
-            }
-        }
-
-        try {
-            Path filePath = uploadPath.resolve(reuqesrDto.getFile().getOriginalFilename());
-            Files.copy(reuqesrDto.getFile().getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to save file", e);
-        }
-        
-
-        requestRepo.save(requestEntity);
-
-        return "redirect:/request/list";
-    }
-
+    // @PostMapping("/create")
+    // public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, BindingResult result, Model model, Principal principal) {
+    //     if (reuqesrDto.getFiles().isEmpty()) {
+    //         result.addError(new FieldError("reuqesrDto", "files", "File is required"));
+    //     }
+    //     if (result.hasErrors()) {
+    //         model.addAttribute("reuqesrDto", reuqesrDto);
+    //         return "upload";
+    //     }
+    
+    //     // Save each file to the server and collect their filenames
+    //     List<String> fileNames = new ArrayList<>();
+    //     for (MultipartFile file : reuqesrDto.getFiles()) {
+    //         if (file.isEmpty()) {
+    //             result.addError(new FieldError("reuqesrDto", "files", "File is required"));
+    //             return "upload";
+    //         }
+    //         try {
+    //             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+    //             Path filePath = Paths.get("uploaded-files").resolve(fileName);
+    //             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+    //             fileNames.add(fileName);
+    //         } catch (IOException e) {
+    //             throw new RuntimeException("Failed to save file", e);
+    //         }
+    //     }
+    
+    //     // Create and save the request entity
+    //     RequestEntity requestEntity = new RequestEntity();
+    //     Date requestDate = new Date();
+    //     requestEntity.setDescription(reuqesrDto.getDescription());
+    //     requestEntity.setRequestDate(requestDate);
+    //     requestEntity.setResponseDate(requestDate);
+    //     requestEntity.setFileNames(fileNames);
+    //     requestEntity.setResponse(Response.PENDING);
+    
+    //     // Set the user
+    //     String username = principal.getName();
+    //     User currentUser = userRepository.findByEmail(username);
+    //     requestEntity.getUsers().add(currentUser);
+    
+    //     requestRepo.save(requestEntity);
+    
+    //     return "redirect:/request/list";
+    // }
+    
     @GetMapping("/delete")
     public String deleteRequest(@RequestParam int id) {
         try {
@@ -142,8 +143,7 @@ public class RequestController {
             RequestEntity requestEntity = requestRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
             ReuqesrDto reuqesrDto = new ReuqesrDto();
             reuqesrDto.setDescription(requestEntity.getDescription());
-            // Additional data can be set here if needed
-
+            // If needed, additional data from the entity can be set here
             model.addAttribute("reuqesrDto", reuqesrDto);
             model.addAttribute("requestId", id);
         } catch (Exception e) {
@@ -166,9 +166,30 @@ public class RequestController {
             // Update the description
             requestEntity.setDescription(reuqesrDto.getDescription());
 
-            // Update the file name only if a new file is uploaded
-            if (!reuqesrDto.getFile().isEmpty()) {
-                requestEntity.setFileName(reuqesrDto.getFile().getOriginalFilename());
+            // Update the file names only if new files are uploaded
+            if (!reuqesrDto.getFiles().isEmpty()) {
+                List<String> fileNames = new ArrayList<>();
+                String folderName = requestEntity.getFolderName();
+                Path folderPath = Paths.get("uploaded-files", folderName);
+
+                // Create the directory if it doesn't exist
+                if (!Files.exists(folderPath)) {
+                    Files.createDirectories(folderPath);
+                }
+
+                for (MultipartFile file : reuqesrDto.getFiles()) {
+                    String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+                    fileNames.add(fileName);
+                    try {
+                        Path filePath = folderPath.resolve(fileName);
+                        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to save file", e);
+                    }
+                }
+
+                // Set the file names in the request entity
+                requestEntity.setFileNames(fileNames);
             }
 
             requestRepo.save(requestEntity);
@@ -187,45 +208,94 @@ public class RequestController {
 
 
 
-
-
-
-
-
-    @GetMapping("/download")
-    public ResponseEntity<Resource> downloadFile(@RequestParam String fileName) {
-        String uploadDir = "uploaded-files/";
-        Path filePath = Paths.get(uploadDir).resolve(fileName).normalize();
-        Resource resource;
-        try {
-            resource = new UrlResource(filePath.toUri());
-            if (!resource.exists()) {
-                throw new RuntimeException("File not found " + fileName);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("File not found " + fileName, e);
-        }
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+@PostMapping("/create")
+public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, BindingResult result, Model model, Principal principal) {
+    if (reuqesrDto.getFiles().isEmpty()) {
+        result.addError(new FieldError("reuqesrDto", "files", "File is required"));
+    }
+    if (result.hasErrors()) {
+        model.addAttribute("reuqesrDto", reuqesrDto);
+        return "upload";
     }
 
+    String folderName = UUID.randomUUID().toString();
+    Path folderPath = Paths.get("uploaded-files", folderName);
+    try {
+        Files.createDirectories(folderPath);
+    } catch (IOException e) {
+        throw new RuntimeException("Failed to create directory", e);
+    }
 
+    // Save each file to the server and collect their filenames
+    List<String> fileNames = new ArrayList<>();
+    for (MultipartFile file : reuqesrDto.getFiles()) {
+        if (file.isEmpty()) {
+            result.addError(new FieldError("reuqesrDto", "files", "File is required"));
+            return "upload";
+        }
+        try {
+            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            Path filePath = folderPath.resolve(fileName);
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            fileNames.add(fileName);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save file", e);
+        }
+    }
 
+    // Create and save the request entity
+    RequestEntity requestEntity = new RequestEntity();
+    Date requestDate = new Date();
+    requestEntity.setDescription(reuqesrDto.getDescription());
+    requestEntity.setRequestDate(requestDate);
+    requestEntity.setResponseDate(requestDate);
+    requestEntity.setFileNames(fileNames);
+    requestEntity.setResponse(Response.PENDING);
+    requestEntity.setFolderName(folderName);  // Save the folder name
 
+    // Set the user
+    String username = principal.getName();
+    User currentUser = userRepository.findByEmail(username);
+    requestEntity.getUsers().add(currentUser);
 
+    requestRepo.save(requestEntity);
 
+    return "redirect:/request/list";
+}
 
+@GetMapping("/download")
+public ResponseEntity<Resource> downloadFolder(@RequestParam String folderName) throws IOException {
+    String uploadDir = "uploaded-files/";
+    Path folderPath = Paths.get(uploadDir).resolve(folderName).normalize();
 
+    if (!Files.exists(folderPath) || !Files.isDirectory(folderPath)) {
+        throw new IllegalArgumentException("Folder not found: " + folderName);
+    }
 
+    // Compress the folder into a zip file
+    Path zipFilePath = Paths.get(uploadDir).resolve(folderName + ".zip");
+    try (ZipOutputStream zipOutputStream = new ZipOutputStream(Files.newOutputStream(zipFilePath))) {
+        Files.walk(folderPath)
+             .filter(path -> !Files.isDirectory(path))
+             .forEach(path -> {
+                 ZipEntry zipEntry = new ZipEntry(folderPath.relativize(path).toString());
+                 try {
+                     zipOutputStream.putNextEntry(zipEntry);
+                     Files.copy(path, zipOutputStream);
+                     zipOutputStream.closeEntry();
+                 } catch (IOException e) {
+                     throw new RuntimeException("Failed to add file to zip: " + path, e);
+                 }
+             });
+    }
 
+    // Prepare the zip file as a resource for download
+    ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(zipFilePath));
 
-
-
-
-
-
+    return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + folderName + ".zip\"")
+            .body(resource);
+}
 
 }

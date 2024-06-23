@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{../css/re.css}">
+    <link rel="stylesheet" th:href="@{/css/re.css}">
     <title>Request List</title>
 </head>
 
@@ -25,22 +25,33 @@
                     <th class="table-header">Response Date</th>
                     <th class="table-header">File Name</th>
                     <th class="table-header">Edit & Delete</th>
+                    <th class="table-header">Comments</th>
                 </tr>
             </thead>
             <tbody>
                 <!-- Loop through requests and display each one -->
-                <tr th:each="request: ${request}">
+                <tr th:each="request : ${requests}">
                     <td class="table-cell" th:text="${request.id}"></td>
                     <td class="table-cell" th:text="${request.description}"></td>
-                    <td class="table-cell" th:text="${request.requestDate}"></td>
-                    <td class="table-cell" th:text="${request.selectedOption}"></td>
-                    <td class="table-cell" th:text="${request.responseDate}"></td>
-                    <td class="table-cell" th:text="${request.fileNames}"></td>
-                    <td class="table-cell actions-cell">
-                        <a class="link-edit" th:href="@{/request/edit(id=${request.id})}">Edit</a>
-                        <a class="link-delete" th:href="@{/request/delete(id=${request.id})}"
-                            onclick="return confirm('Are you sure?')">Delete</a>
+                    <td class="table-cell" th:text="${#dates.format(request.requestDate, 'dd-MM-yyyy')}"></td>
+               
+                    <td class="table-cell" th:text="${#dates.format(request.responseDate, 'dd-MM-yyyy')}"></td>
+                    <td class="table-cell">
+                        <ul>
+                            <li th:each="fileName : ${request.fileNames}" th:text="${fileName}"></li>
+                        </ul>
                     </td>
+                    <td class="table-cell actions-cell">
+                        
+                        <a class="link-edit" th:href="@{/request/edit(id=${request.id})}">Edit</a>
+                        <a class="link-delete" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                    <td class="table-cell">
+                        <ul>
+                            <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
+                        </ul>
+                    </td>
+                    <td class="table-cell" th:text="${request.response}"></td>
                 </tr>
             </tbody>
         </table>

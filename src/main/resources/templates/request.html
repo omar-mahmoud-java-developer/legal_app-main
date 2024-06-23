@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{../css/re.css}">
     <title>Request List</title>
+    <style>
+        /* Add your custom CSS styles here */
+    </style>
 </head>
 
 <body>
@@ -14,48 +17,61 @@
     </header>
 
     <div id="content">
-        <form id="request-form" method="post" action="/request/creat">
-            <table id="request-table">
-                <thead>
-                    <tr>
-                        <th class="table-header">ID</th>
-                        <th class="table-header">Name</th>
-                        <th class="table-header">Description</th>
-                        <th class="table-header">Request Date</th>
-                        <th class="table-header">Selected Option</th>
-                        <th class="table-header">File Name</th>
-                        <th class="table-header">Edit & Delete</th>
-                        <th class="table-header">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Loop through requests and display each one -->
-                    <tr th:each="request: ${request}">
-                        <td class="table-cell" th:text="${request.id}"></td>
-                        <td class="table-cell" th:text="${request.users[0].fullname}"></td>
-                        <td class="table-cell" th:text="${request.description}"></td>
-                        <td class="table-cell" th:text="${request.requestDate}"></td>
-                        <td class="table-cell">
+        <table id="request-table">
+            <thead>
+                <tr>
+                    <th class="table-header">ID</th>
+                    <th class="table-header">Name</th>
+                    <th class="table-header">Description</th>
+                    <th class="table-header">Request Date</th>
+                    <th class="table-header">Selected Option</th>
+                    <th class="table-header">File Name</th>
+                    <th class="table-header">Add Comment</th>
+                    <th class="table-header">Edit & Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loop through requests and display each one -->
+                <tr th:each="request: ${requests}">
+                    <td class="table-cell" th:text="${request.id}"></td>
+                    <td class="table-cell" th:text="${request.users[0].fullname}"></td>
+                    <td class="table-cell" th:text="${request.description}"></td>
+                    <td class="table-cell" th:text="${#dates.format(request.requestDate, 'dd-MM-yyyy')}"></td>
+                    <td class="table-cell">
+                        <form method="post" action="/request/updateResponse">
                             <input type="hidden" name="requestId" th:value="${request.id}" />
-                            <select name="selectedOption" id="selectedOption" th:value="${request.selectedOption}">
-                                <option value="Option1" th:selected="${request.selectedOption == 'Option1'}">Option 1</option>
-                                <option value="Option2" th:selected="${request.selectedOption == 'Option2'}">Option 2</option>
-                                <!-- Add more options as needed -->
+                            <select name="response">
+                                <option th:each="resp : ${T(com.omar.legal_app.entity.Response).values()}"
+                                        th:value="${resp}" th:text="${#strings.capitalize(resp.toString().toLowerCase())}"
+                                        th:selected="${resp == request.response}">
+                                </option>
                             </select>
-                        </td>
-                        <td class="table-cell" th:text="${request.folderName}"></td>
-                        <td class="table-cell actions-cell">
-                            <a class="link-edit" th:href="@{/request/edit(id=${request.id})}">Edit</a>
-                            <a class="link-delete" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
-                            <a class="link-download" th:href="@{/request/download(folderName=${request.folderName})}">Download</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="submit">Save</button>
-        </form>
+                            <button type="submit">Update Response</button>
+                        </form>
+                    </td>
+                    <td class="table-cell" th:text="${request.folderName}"></td>
+                    <td>
+                        <form id="comment-form" method="post" action="/request/addComment">
+                            <input type="hidden" name="requestId" th:value="${request.id}" />
+                            <input type="text" name="comment" placeholder="Enter comment">
+                            <button type="submit">Add Comment</button>
+                        </form>
+                    </td>
+                    <td class="table-cell">
+                        <ul>
+                            <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
+                        </ul>
+                    </td>
+                    <td class="table-cell actions-cell">
+                        <a class="link-download" th:href="@{/request/download(folderName=${request.folderName})}">Download</a>
+                        <a class="link-edit" th:href="@{/request/edit(id=${request.id})}">Edit</a>
+                        <a class="link-delete" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-   
+
     <footer id="main-footer">
         <p>&copy; 2024 Our Web App. All rights reserved.</p>
     </footer>

@@ -7,7 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReuqesrDto {
 
     private String description;
-    private String comments;
+    
+ 
     private String selectedOption;
     private List<MultipartFile> files;
     private Response response;
@@ -20,13 +21,6 @@ public class ReuqesrDto {
         this.description = description;
     }
 
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
 
     public String getSelectedOption() {
         return selectedOption;
@@ -51,11 +45,6 @@ public class ReuqesrDto {
     public void setResponse(Response response) {
         this.response = response;
     }
-
-
-
-
-
 
     private String folderName;
 

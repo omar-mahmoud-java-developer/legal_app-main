@@ -9,6 +9,11 @@ import com.omar.legal_app.entity.User;
 
 public interface RequestRepo extends JpaRepository<RequestEntity, Integer> {
    List<RequestEntity> findByUsers(User user);
+
+
+
+ 
+   
     
 
 }

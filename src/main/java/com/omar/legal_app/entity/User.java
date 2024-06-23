@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 @Entity
@@ -24,6 +25,9 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
 private Set<RequestEntity> requestEntities = new HashSet<>();
+ @OneToMany(mappedBy = "user")
+    private Set<Comments> comments = new HashSet<>();
+
 	
 	public User() {
 		super();
@@ -76,6 +80,22 @@ private Set<RequestEntity> requestEntities = new HashSet<>();
 	public void setFullname(String fullname) {
 		this.fullname = fullname;
 	}
+
+    public Set<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comments> comments) {
+        this.comments = comments;
+    }
+
+    public Set<RequestEntity> getRequestEntities() {
+        return requestEntities;
+    }
+
+    public void setRequestEntities(Set<RequestEntity> requestEntities) {
+        this.requestEntities = requestEntities;
+    }
 	
 	
 	

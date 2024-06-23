@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 @Entity
 @Table(name = "request")
@@ -28,8 +29,7 @@ public class RequestEntity {
    
     @Column(name = "selected_option")
     private String selectedOption;
-   @Column(columnDefinition="TEXT")
-    private String Comments;
+
     @Column(columnDefinition="TEXT")
     private String description;
     private Date requestDate;
@@ -44,7 +44,8 @@ public class RequestEntity {
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private Set<User> users = new HashSet<>();
-
+  @OneToMany(mappedBy = "requestEntity")
+    private Set<Comments> comments = new HashSet<>();
  
   
     // Getters and setters
@@ -114,16 +115,6 @@ public class RequestEntity {
     }
 
 
-
-    public String getComments() {
-        return Comments;
-    }
-
-    public void setComments(String Comments) {
-        this.Comments = Comments;
-    }
-
-
     private String folderName;
 
     // Getters and setters for folderName
@@ -133,6 +124,14 @@ public class RequestEntity {
 
     public void setFolderName(String folderName) {
         this.folderName = folderName;
+    }
+
+    public Set<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comments> comments) {
+        this.comments = comments;
     }
 
   

@@ -12,12 +12,12 @@
 </head>
 
 <body>
-    <header id="main-header">
-        <h1 id="header-title">Request List</h1>
+    <header class="main-header">
+        <h1 class="header-title">Request List</h1>
     </header>
 
-    <div id="content">
-        <table id="request-table">
+    <div class="content">
+        <table class="request-table">
             <thead>
                 <tr>
                     <th class="table-header">ID</th>
@@ -27,6 +27,8 @@
                     <th class="table-header">Selected Option</th>
                     <th class="table-header">File Name</th>
                     <th class="table-header">Add Comment</th>
+                    <th class="table-header">Comment</th>
+                    <th class="table-header">Download</th>
                     <th class="table-header">Edit & Delete</th>
                 </tr>
             </thead>
@@ -51,7 +53,7 @@
                     </td>
                     <td class="table-cell" th:text="${request.folderName}"></td>
                     <td>
-                        <form id="comment-form" method="post" action="/request/addComment">
+                        <form method="post" action="/request/addComment">
                             <input type="hidden" name="requestId" th:value="${request.id}" />
                             <input type="text" name="comment" placeholder="Enter comment">
                             <button type="submit">Add Comment</button>
@@ -64,6 +66,8 @@
                     </td>
                     <td class="table-cell actions-cell">
                         <a class="link-download" th:href="@{/request/download(folderName=${request.folderName})}">Download</a>
+                    </td>
+                    <td class="table-cell actions-cell">
                         <a class="link-edit" th:href="@{/request/edit(id=${request.id})}">Edit</a>
                         <a class="link-delete" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
                     </td>
@@ -72,10 +76,6 @@
         </table>
     </div>
 
-    <footer id="main-footer">
-        <p>&copy; 2024 Our Web App. All rights reserved.</p>
-    </footer>
 
 </body>
-
 </html>

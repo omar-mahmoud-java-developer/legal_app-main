@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/re.css}">
     <title>Request List</title>
 </head>
-
 <body>
-    <header id="main-header">
-        <h1 id="header-title">Request List</h1>
-        <a href="/request/create" class="btn" id="get-started-btn">Get Started</a>
+    <header class="main-header">
+        <h1 class="header-title">Request List</h1> 
+        <a href="/request/create" class="btn get-started-btn">NEW REQUEST</a>
     </header>
 
-    <div id="content">
-        <table id="request-table">
+    <div class="content">
+        <table class="request-table">
             <thead>
                 <tr>
                     <th class="table-header">ID</th>
@@ -23,9 +21,9 @@
                     <th class="table-header">Request Date</th>
                     <th class="table-header">Pending Justification</th>
                     <th class="table-header">Response Date</th>
+                    <th class="table-header">Comments</th>
                     <th class="table-header">File Name</th>
                     <th class="table-header">Edit & Delete</th>
-                    <th class="table-header">Comments</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,32 +32,27 @@
                     <td class="table-cell" th:text="${request.id}"></td>
                     <td class="table-cell" th:text="${request.description}"></td>
                     <td class="table-cell" th:text="${#dates.format(request.requestDate, 'dd-MM-yyyy')}"></td>
-               
+                    <td class="table-cell" th:text="${request.response}"></td>
                     <td class="table-cell" th:text="${#dates.format(request.responseDate, 'dd-MM-yyyy')}"></td>
+                    <td class="table-cell">
+                        <ul>
+                            <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
+                        </ul>
+                    </td>
                     <td class="table-cell">
                         <ul>
                             <li th:each="fileName : ${request.fileNames}" th:text="${fileName}"></li>
                         </ul>
                     </td>
                     <td class="table-cell actions-cell">
-                        
                         <a class="link-edit" th:href="@{/request/edit(id=${request.id})}">Edit</a>
                         <a class="link-delete" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
                     </td>
-                    <td class="table-cell">
-                        <ul>
-                            <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
-                        </ul>
-                    </td>
-                    <td class="table-cell" th:text="${request.response}"></td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <footer id="main-footer">
-        <p>&copy; 2024 Our Web App. All rights reserved.</p>
-    </footer>
-</body>
 
+</body>
 </html>

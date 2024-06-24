@@ -98,18 +98,23 @@ public class RequestController {
     
    
 
-
     @GetMapping("/delete")
     public String deleteRequest(@RequestParam int id) {
         try {
-            RequestEntity rEntity = requestRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
-            requestRepo.delete(rEntity);
+            RequestEntity requestEntity = requestRepo.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
+    
+            // Delete all associated comments first
+            commentsRepository.deleteAll(requestEntity.getComments());
+    
+            // Then delete the request entity
+            requestRepo.delete(requestEntity);
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
         }
         return "redirect:/request/list";
     }
-
+    
     @GetMapping("/edit")
     public String showEditRequestPage(@RequestParam int id, Model model) {
         try {

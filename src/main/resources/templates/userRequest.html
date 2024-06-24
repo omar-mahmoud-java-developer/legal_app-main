@@ -31,9 +31,10 @@
                 <tr th:each="request : ${requests}">
                     <td class="table-cell" th:text="${request.id}"></td>
                     <td class="table-cell" th:text="${request.description}"></td>
-                    <td class="table-cell" th:text="${#dates.format(request.requestDate, 'dd-MM-yyyy')}"></td>
+                    <td class="table-cell" th:text="${#dates.format(request.responseDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                  
                     <td class="table-cell" th:text="${request.response}"></td>
-                    <td class="table-cell" th:text="${#dates.format(request.responseDate, 'dd-MM-yyyy')}"></td>
+                    <td class="table-cell" th:text="${#dates.format(request.requestDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                     <td class="table-cell">
                         <ul>
                             <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
@@ -45,9 +46,17 @@
                         </ul>
                     </td>
                     <td class="table-cell actions-cell">
+                        <div th:if="${request.response != T(com.omar.legal_app.entity.Response).COMPLETED}">
+                    
                         <a class="link-edit" th:href="@{/request/edit(id=${request.id})}">Edit</a>
+                        
                         <a class="link-delete" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+                    </div>
                     </td>
+                    <td class="table-cell actions-cell" th:unless="${request.response != 'COMPLETED'}">
+                        <!-- Placeholder to keep the table structure consistent -->
+                    </td>
+                    
                 </tr>
             </tbody>
         </table>

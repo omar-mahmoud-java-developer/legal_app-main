@@ -29,7 +29,7 @@
                     <th class="table-header">Add Comment</th>
                     <th class="table-header">Comment</th>
                     <th class="table-header">Download</th>
-                    <th class="table-header">Edit & Delete</th>
+            
                 </tr>
             </thead>
             <tbody>
@@ -67,10 +67,7 @@
                     <td class="table-cell actions-cell">
                         <a class="link-download" th:href="@{/request/download(folderName=${request.folderName})}">Download</a>
                     </td>
-                    <td class="table-cell actions-cell">
-                        <a class="link-edit" th:href="@{/request/edit(id=${request.id})}">Edit</a>
-                        <a class="link-delete" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
-                    </td>
+                    
                 </tr>
             </tbody>
         </table>

@@ -4,13 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{/css/re.css}">
+    <script type="text/javascript" th:src="@{/js/user.js}"></script>
     <title>Request List</title>
 </head>
 <body>
     <header class="main-header">
-        <h1 class="header-title">Request List</h1> 
-        <a href="/request/create" class="btn get-started-btn">NEW REQUEST</a>
+        <div class="header-content">
+            <h1 class="header-title">Request List</h1>
+        </div>
     </header>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="/request/create" class="btn get-started-btn">NEW REQUEST</a>
+            <a th:href="@{/logout}" class="logout-link">Logout</a>
+        </div>
+    </nav>
+ 
 
     <div class="content">
         <table class="request-table">
@@ -19,11 +28,10 @@
                     <th class="table-header">ID</th>
                     <th class="table-header">Description</th>
                     <th class="table-header">Request Date</th>
-                    <th class="table-header">Pending Justification</th>
                     <th class="table-header">Response Date</th>
                     <th class="table-header">Comments</th>
                     <th class="table-header">File Name</th>
-                    <th class="table-header">Edit & Delete</th>
+                    <th class="table-header">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,10 +39,8 @@
                 <tr th:each="request : ${requests}">
                     <td class="table-cell" th:text="${request.id}"></td>
                     <td class="table-cell" th:text="${request.description}"></td>
-                    <td class="table-cell" th:text="${#dates.format(request.responseDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                  
-                    <td class="table-cell" th:text="${request.response}"></td>
                     <td class="table-cell" th:text="${#dates.format(request.requestDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                    <td class="table-cell" th:text="${#dates.format(request.responseDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                     <td class="table-cell">
                         <ul>
                             <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
@@ -47,21 +53,18 @@
                     </td>
                     <td class="table-cell actions-cell">
                         <div th:if="${request.response != T(com.omar.legal_app.entity.Response).COMPLETED}">
-                    
-                        <a class="link-edit" th:href="@{/request/edit(id=${request.id})}">Edit</a>
-                        
-                        <a class="link-delete" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
-                    </div>
+                            <a class="action-link edit-link" th:href="@{/request/edit(id=${request.id})}">Edit</a>
+                            <a class="action-link delete-link" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+                        </div>
                     </td>
-                    <td class="table-cell actions-cell" th:unless="${request.response != 'COMPLETED'}">
-                        <!-- Placeholder to keep the table structure consistent -->
-                    </td>
-                    
                 </tr>
             </tbody>
         </table>
     </div>
 
-
+    <footer class="main-footer">
+        <p>&copy; 2024 Your Company</p>
+    </footer>
+  
 </body>
 </html>

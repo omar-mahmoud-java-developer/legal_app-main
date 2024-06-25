@@ -1,29 +1,30 @@
-/* General Styles */
-
 body {
     font-family: Arial, sans-serif;
-    background-color: rgba(191, 217, 229, 0.2);
+    background-color: #A9A9A9;
     margin: 0;
     padding: 0;
     line-height: 1.6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.main-header, .main-footer {
-    background-color: #004250;
-    color: #fff;
+.navbar {
+    background-color: #002147;
     padding: 10px 20px;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+    color: #FFFFFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.header-title {
-    margin: 0;
+.nav-content {
+    display: flex;
+    align-items: center;
 }
 
-.get-started-btn {
-    background-color: #F2C864;
-    color: #fff;
+.get-started-btn, .logout-link {
+    background-color: #005B96;
+    color: #FFFFFF;
     padding: 8px 12px;
     border: none;
     border-radius: 4px;
@@ -31,15 +32,27 @@ body {
     text-decoration: none;
     font-size: 16px;
     transition: background-color 0.3s, transform 0.3s;
+    margin-left: 10px;
 }
 
-.get-started-btn:hover {
-    background-color: #e6b854;
+.get-started-btn:hover, .logout-link:hover {
+    background-color: #004C82;
     transform: scale(1.05);
 }
 
+.main-header {
+    background-color: #002147;
+    color: #FFFFFF;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.header-title {
+    margin: 0;
+}
+
 .content {
-    background-color: #fff;
+    background-color: #FFFFFF;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     margin: 25px auto;
@@ -54,8 +67,8 @@ body {
 }
 
 .table-header {
-    background-color: #F2C864;
-    color: #fff;
+    background-color: #005B96;
+    color: #FFFFFF;
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
@@ -85,10 +98,13 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
+    display: none;
+    background-color: #002147;
+    color: #FFFFFF;
 }
 
 .link-edit, .link-delete {
-    color: #004250;
+    color: #002147;
     text-decoration: none;
     padding: 5px 10px;
     font-size: 14px;
@@ -96,13 +112,20 @@ body {
 }
 
 .link-edit:hover, .link-delete:hover {
-    background-color: #F2C864;
+    background-color: #005B96;
     border-radius: 4px;
     transform: scale(1.1);
 }
 
+.logout-link {
+    background-color: #ff6347; /* Reddish color for logout */
+    margin-left: 10px; /* Adjust margin as needed */
+}
 
-
+.logout-link:hover {
+    background-color: #cc4c38; /* Darker shade on hover */
+    transform: scale(1.05);
+}
 
 /* Responsive Styles */
 
@@ -127,9 +150,15 @@ body {
     .main-header, .main-footer {
         padding: 8px;
     }
+}
 
+/* Show footer only when reaching the end of the page */
+body:after {
+    content: '';
+    display: block;
+    height: 100px; /* Height of the footer */
+}
 
-
-
-    
+body.scroll-footer .main-footer {
+    display: block;
 }

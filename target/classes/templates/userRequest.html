@@ -29,6 +29,7 @@
                     <th class="table-header">Description</th>
                     <th class="table-header">Request Date</th>
                     <th class="table-header">Response Date</th>
+                    <th class="table-header">Response</th>
                     <th class="table-header">Comments</th>
                     <th class="table-header">File Name</th>
                     <th class="table-header">Actions</th>
@@ -41,11 +42,13 @@
                     <td class="table-cell" th:text="${request.description}"></td>
                     <td class="table-cell" th:text="${#dates.format(request.requestDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                     <td class="table-cell" th:text="${#dates.format(request.responseDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                    <td class="table-cell"  th:text="${request.response}"></td>
                     <td class="table-cell">
                         <ul>
                             <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
                         </ul>
                     </td>
+                
                     <td class="table-cell">
                         <ul>
                             <li th:each="fileName : ${request.fileNames}" th:text="${fileName}"></li>

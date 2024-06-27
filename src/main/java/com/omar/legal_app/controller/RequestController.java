@@ -71,8 +71,11 @@ public class RequestController {
 
         // List<RequestEntity> userRequests = requestRepo.findByUsers(currentUser);
         // model.addAttribute("request", userRequests);
-        List<RequestEntity> requests = requestRepo.findAll();
-        model.addAttribute("requests", requests);
+        String username = principal.getName();
+        User currentUser = userRepository.findByEmail(username);
+        List<RequestEntity> userRequests = requestRepo.findByUsers(currentUser);
+        model.addAttribute("requests", userRequests);
+     
         return "userRequest"; // Ensure this is the correct view name
     }
 

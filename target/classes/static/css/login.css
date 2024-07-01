@@ -13,7 +13,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #D7E8F2; /* Light blue background */
+    background: #F5F5F5; /* Cool White background */
 }
 
 /* Container Styles */
@@ -53,7 +53,7 @@ form {
 
 form .title {
     font-size: 2.2rem;
-    color: #004250; /* Dark teal text */
+    color: #333333; /* Charcoal Gray text */
     margin-bottom: 10px;
 }
 
@@ -74,22 +74,22 @@ form .title {
 .input-field input {
     width: 100%;
     padding: 10px 15px 10px 40px;
-    border: none;
+    border: 1px solid #D3D3D3; /* Light Gray border */
     outline: none;
-    background: #D7E8F2; /* Light blue input background */
-    color: #004250; /* Dark teal text */
+    background: #F5F5F5; /* Cool White input background */
+    color: #333333; /* Charcoal Gray text */
     font-size: 1rem;
     border-radius: 25px;
     transition: 0.3s;
 }
 
 .input-field input:focus {
-    background: #BFD9E5; /* Slightly darker blue on focus */
+    background: #E8E8E8; /* Slightly darker gray on focus */
 }
 
 .btn {
     width: 100%;
-    background: #004250; /* Dark teal button */
+    background: #1E90FF; /* Electric Blue button */
     border: none;
     outline: none;
     padding: 10px 0;
@@ -101,7 +101,7 @@ form .title {
 }
 
 .btn:hover {
-    background: #00303d; /* Darker teal on hover */
+    background: #1A78D1; /* Darker Electric Blue on hover */
 }
 
 /* Panel Styles */
@@ -111,7 +111,7 @@ form .title {
     right: 0;
     width: 50%;
     height: 100%;
-    background: #004250; /* Dark teal panel background */
+    background: #333333; /* Charcoal Gray panel background */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -142,42 +142,40 @@ form .title {
 
 .erc h1 {
     font-size: 3rem;
-    color: #F2C864; /* Yellow text for ERC */
+    color: #e7e7e7; /* Electric Blue text for ERC */
 }
 
 .nc h3, .app h3 {
     font-size: 1.5rem;
-    color: #F2C864; /* Yellow text for other headers */
+    color: #e7e7e7; /* Electric Blue text for other headers */
 }
-
-
 
 .forgot-password-button {
     display: inline-block;
     margin-top: 20px; /* Adjusted margin top */
     padding: 10px 20px;
-    border: 2px solid #004250; /* Dark teal border */
+    border: 2px solid #008080; /* Urban Teal border */
     border-radius: 25px;
     font-size: 0.9rem;
-    color: #004250; /* Dark teal text */
+    color: #008080; /* Urban Teal text */
     text-decoration: none;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
-.register-button{
-
+.register-button {
     display: inline-block;
     margin-top: 20px; /* Adjusted margin top */
     padding: 10px 20px;
-    border: 2px solid #004250; /* Dark teal border */
+    border: 2px solid #008080; /* Urban Teal border */
     border-radius: 25px;
     font-size: 0.9rem;
-    color: #004250; /* Dark teal text */
+    color: #008080; /* Urban Teal text */
     text-decoration: none;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
+
 .register-button:hover, .forgot-password-button:hover {
-    background-color: #004250; /* Dark teal background on hover */
+    background-color: #008080; /* Urban Teal background on hover */
     color: #fff; /* White text on hover */
 }
 

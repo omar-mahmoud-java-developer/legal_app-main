@@ -3,6 +3,8 @@ com\omar\legal_app\service\CustomUserDetailsService.class
 com\omar\legal_app\service\CustomSuccessHandler.class
 com\omar\legal_app\service\CustomUserDetail.class
 com\omar\legal_app\repository\UserRepository.class
+com\omar\legal_app\entity\Comments.class
+com\omar\legal_app\repository\CommentsRepository.class
 com\omar\legal_app\repository\ForgotPasswordRepo.class
 com\omar\legal_app\entity\User.class
 com\omar\legal_app\controller\ForhotPasswordController.class

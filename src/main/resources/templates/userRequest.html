@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/css/re.css}">
+    <link rel="stylesheet" th:href="@{/css/requestList.css}">
     <script type="text/javascript" th:src="@{/js/user.js}"></script>
     <title>Request List</title>
 </head>
@@ -12,13 +12,14 @@
         <div class="header-content">
             <h1 class="header-title">Request List</h1>
         </div>
+        <nav class="navbar">
+            <div class="nav-content">
+                <a href="/request/create" class="btn get-started-btn">NEW REQUEST</a>
+                <a th:href="@{/logout}" class="logout-link">Logout</a>
+            </div>
+        </nav>
     </header>
-    <nav class="navbar">
-        <div class="nav-content">
-            <a href="/request/create" class="btn get-started-btn">NEW REQUEST</a>
-            <a th:href="@{/logout}" class="logout-link">Logout</a>
-        </div>
-    </nav>
+
  
 
     <div class="content">
@@ -65,9 +66,6 @@
         </table>
     </div>
 
-    <footer class="main-footer">
-        <p>&copy; 2024 Your Company</p>
-    </footer>
-  
+
 </body>
 </html>

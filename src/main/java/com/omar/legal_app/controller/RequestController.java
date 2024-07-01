@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,12 +66,7 @@ public class RequestController {
 
     @GetMapping("/list")
     public String showRequestList(Model model, Principal principal) {
-        // String username = principal.getName();
-        // User currentUser = userRepository.findByEmail(username);
-        //     //.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        // List<RequestEntity> userRequests = requestRepo.findByUsers(currentUser);
-        // model.addAttribute("request", userRequests);
         String username = principal.getName();
         User currentUser = userRepository.findByEmail(username);
         List<RequestEntity> userRequests = requestRepo.findByUsers(currentUser);
@@ -82,11 +78,10 @@ public class RequestController {
     @GetMapping("/alist")
     public String showRequestAllList(Model model) {
        
-        List<RequestEntity> requests = requestRepo.findAll(); // Assuming requestRepo is your repository
+        List<RequestEntity> requests = requestRepo.findAll(); 
         model.addAttribute("requests", requests);
-        // List<RequestEntity> userRequests = requestRepo.findAll();
-        // model.addAttribute("request", userRequests);
-        return "request"; // Ensure this is the correct view name
+   
+        return "adminRequest"; // Ensure this is the correct view name
     }
     
     @GetMapping("/create")
@@ -234,7 +229,7 @@ public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, Bindin
     Date requestDate = new Date();
     requestEntity.setDescription(reuqesrDto.getDescription());
     requestEntity.setRequestDate(requestDate);
-    requestEntity.setResponseDate(requestDate);
+   // requestEntity.setResponseDate(requestDate);
     requestEntity.setFileNames(fileNames);
     requestEntity.setResponse(Response.PENDING);
 
@@ -344,6 +339,9 @@ public String updateResponse(@RequestParam("requestId") int requestId,
     // Update the response status
     RequestEntity requestEntity = requestOptional.get();
     requestEntity.setResponse(response);
+    requestEntity.setResponseDate(Date.from(Instant.now()));
+    
+      
     requestRepo.save(requestEntity);
 
     return "redirect:/request/alist";

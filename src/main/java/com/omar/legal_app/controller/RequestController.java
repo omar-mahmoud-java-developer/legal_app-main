@@ -30,14 +30,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.omar.legal_app.entity.Comments;
+import com.omar.legal_app.entity.CustomerEntity;
 import com.omar.legal_app.entity.RequestEntity;
 import com.omar.legal_app.entity.Response;
 import com.omar.legal_app.entity.ReuqesrDto;
 import com.omar.legal_app.entity.User;
 import com.omar.legal_app.repository.CommentsRepository;
+import com.omar.legal_app.repository.CustomerRepo;
 import com.omar.legal_app.repository.RequestRepo;
 import com.omar.legal_app.repository.UserRepository;
 
@@ -53,11 +56,15 @@ public class RequestController {
 
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+     private  CustomerRepo customerRepo;
     private final CommentsRepository commentsRepository;
 
-    public RequestController(CommentsRepository commentsRepository, RequestRepo requestRepo, UserRepository userRepository) {
+
+
+    public RequestController(CommentsRepository commentsRepository, CustomerRepo customerRepo, RequestRepo requestRepo, UserRepository userRepository) {
         this.commentsRepository = commentsRepository;
+        this.customerRepo = customerRepo;
         this.requestRepo = requestRepo;
         this.userRepository = userRepository;
     }
@@ -66,13 +73,11 @@ public class RequestController {
 
     @GetMapping("/list")
     public String showRequestList(Model model, Principal principal) {
-
         String username = principal.getName();
         User currentUser = userRepository.findByEmail(username);
         List<RequestEntity> userRequests = requestRepo.findByUsers(currentUser);
         model.addAttribute("requests", userRequests);
-     
-        return "userRequest"; // Ensure this is the correct view name
+        return "userRequest"; 
     }
 
     @GetMapping("/alist")
@@ -84,13 +89,15 @@ public class RequestController {
         return "adminRequest"; // Ensure this is the correct view name
     }
     
+
     @GetMapping("/create")
     public String showRequest(Model model) {
         ReuqesrDto reuqesrDto = new ReuqesrDto();
+        List<CustomerEntity> customers = customerRepo.findAll();
         model.addAttribute("reuqesrDto", reuqesrDto);
+        model.addAttribute("customers", customers);
         return "upload";
     }
-
 
 
     
@@ -195,7 +202,9 @@ public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, Bindin
         result.addError(new FieldError("reuqesrDto", "files", "File is required"));
     }
     if (result.hasErrors()) {
+        List<CustomerEntity> customers = customerRepo.findAll();
         model.addAttribute("reuqesrDto", reuqesrDto);
+        model.addAttribute("customers", customers);
         return "upload";
     }
 
@@ -207,7 +216,6 @@ public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, Bindin
         throw new RuntimeException("Failed to create directory", e);
     }
 
-    // Save each file to the server and collect their filenames
     List<String> fileNames = new ArrayList<>();
     for (MultipartFile file : reuqesrDto.getFiles()) {
         if (file.isEmpty()) {
@@ -224,21 +232,18 @@ public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, Bindin
         }
     }
 
-    // Create and save the request entity
     RequestEntity requestEntity = new RequestEntity();
-    Date requestDate = new Date();
     requestEntity.setDescription(reuqesrDto.getDescription());
-    requestEntity.setRequestDate(requestDate);
-   // requestEntity.setResponseDate(requestDate);
+    requestEntity.setRequestDate(new Date());
     requestEntity.setFileNames(fileNames);
     requestEntity.setResponse(Response.PENDING);
+    requestEntity.setFolderName(folderName);
 
-    requestEntity.setFolderName(folderName);  // Save the folder name
-
-    // Set the user
     String username = principal.getName();
     User currentUser = userRepository.findByEmail(username);
     requestEntity.getUsers().add(currentUser);
+    CustomerEntity customer = customerRepo.findById(reuqesrDto.getCustomerId()).orElseThrow(() -> new IllegalArgumentException("Invalid customer Id:" + reuqesrDto.getCustomerId()));
+    requestEntity.setCustomer(customer);
 
     requestRepo.save(requestEntity);
 
@@ -348,7 +353,11 @@ public String updateResponse(@RequestParam("requestId") int requestId,
 }
 
 
-
+@GetMapping("/searchCustomers")
+@ResponseBody
+public List<CustomerEntity> searchCustomers(@RequestParam String query) {
+    return customerRepo.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(query, query);
+}
 
 
 

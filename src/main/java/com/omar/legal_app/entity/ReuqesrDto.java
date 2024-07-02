@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ReuqesrDto {
 
     private String description;
+    private int customerId;
     
  
     private String selectedOption;
@@ -55,5 +56,13 @@ public class ReuqesrDto {
 
     public void setFolderName(String folderName) {
         this.folderName = folderName;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 }

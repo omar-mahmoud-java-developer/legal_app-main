@@ -13,20 +13,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 @Entity
 @Table(name = "request")
 public class RequestEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
-
-
-    
-   
     @Column(name = "selected_option")
     private String selectedOption;
 
@@ -47,7 +43,9 @@ public class RequestEntity {
   @OneToMany(mappedBy = "requestEntity")
     private Set<Comments> comments = new HashSet<>();
  
-  
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
     // Getters and setters
     public Integer getId() {
         return id;
@@ -133,6 +131,17 @@ public class RequestEntity {
     public void setComments(Set<Comments> comments) {
         this.comments = comments;
     }
+
+
+
+    public CustomerEntity getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerEntity customer) {
+        this.customer = customer;
+    }
+
 
   
 

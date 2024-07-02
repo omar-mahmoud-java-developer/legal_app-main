@@ -20,8 +20,6 @@
         </nav>
     </header>
 
- 
-
     <div class="content">
         <table class="request-table">
             <thead>
@@ -32,28 +30,33 @@
                     <th class="table-header">Response Date</th>
                     <th class="table-header">Response</th>
                     <th class="table-header">Comments</th>
-                    <th class="table-header">File Name</th>
+                    <th class="table-header">File Names</th>
+                    <th class="table-header">Customer Details</th>
                     <th class="table-header">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Loop through requests and display each one -->
                 <tr th:each="request : ${requests}">
                     <td class="table-cell" th:text="${request.id}"></td>
                     <td class="table-cell" th:text="${request.description}"></td>
                     <td class="table-cell" th:text="${#dates.format(request.requestDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
                     <td class="table-cell" th:text="${#dates.format(request.responseDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                    <td class="table-cell"  th:text="${request.response}"></td>
+                    <td class="table-cell" th:text="${request.response}"></td>
                     <td class="table-cell">
                         <ul>
                             <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
                         </ul>
                     </td>
-                
                     <td class="table-cell">
                         <ul>
                             <li th:each="fileName : ${request.fileNames}" th:text="${fileName}"></li>
                         </ul>
+                    </td>
+                    <td class="table-cell">
+                        <p th:if="${request.customer != null}" th:text="'Name: ' + ${request.customer.name}"></p>
+                        <p th:if="${request.customer != null}" th:text="'Email: ' + ${request.customer.email}"></p>
+                        <p th:if="${request.customer != null}" th:text="'company: ' + ${request.customer.company}"></p>
+                        <p th:if="${request.customer == null}">No customer details available</p>
                     </td>
                     <td class="table-cell actions-cell">
                         <div th:if="${request.response != T(com.omar.legal_app.entity.Response).COMPLETED}">
@@ -65,7 +68,5 @@
             </tbody>
         </table>
     </div>
-
-
 </body>
 </html>

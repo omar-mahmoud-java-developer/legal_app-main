@@ -29,6 +29,7 @@
                     <th class="table-header">File Name</th>
                     <th class="table-header">Add Comment</th>
                     <th class="table-header">Comment</th>
+                    <th class="table-header">Customer Details</th>
                     <th class="table-header">Download</th>
             
                 </tr>
@@ -64,6 +65,12 @@
                         <ul>
                             <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
                         </ul>
+                    </td>
+                    <td class="table-cell">
+                        <p th:if="${request.customer != null}" th:text="'Name: ' + ${request.customer.name}"></p>
+                        <p th:if="${request.customer != null}" th:text="'Email: ' + ${request.customer.email}"></p>
+                        <p th:if="${request.customer != null}" th:text="'Phone: ' + ${request.customer.phone}"></p>
+                        <p th:if="${request.customer == null}">No customer details available</p>
                     </td>
                     <td class="table-cell actions-cell">
                         <a class="link-download" th:href="@{/request/download(folderName=${request.folderName})}">Download</a>

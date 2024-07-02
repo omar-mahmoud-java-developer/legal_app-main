@@ -32,7 +32,8 @@ body {
 }
 
 .upload-form input[type="file"],
-.upload-form textarea {
+.upload-form textarea,
+.upload-form select {
     width: calc(100% - 20px);
     margin: 10px 0;
     padding: 10px;
@@ -66,4 +67,23 @@ body {
     .upload-form {
         padding: 20px;
     }
+}
+
+/* Additional styles for Select2 */
+.select2-container .select2-selection--single {
+    height: 40px;
+    padding: 6px 12px;
+    border: 1px solid #D3D3D3; /* Light Gray border */
+    border-radius: 5px;
+    background-color: #F5F5F5; /* Cool White background */
+    color: #333333; /* Charcoal Gray text */
+    font-size: 16px;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    line-height: 26px; /* Adjust line height for better alignment */
+}
+
+.select2-container .select2-selection--single .select2-selection__arrow {
+    height: 36px; /* Adjust arrow height */
 }

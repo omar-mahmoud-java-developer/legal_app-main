@@ -358,6 +358,11 @@ public String updateResponse(@RequestParam("requestId") int requestId,
 public List<CustomerEntity> searchCustomers(@RequestParam String query) {
     return customerRepo.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(query, query);
 }
+@GetMapping("/customerDetails")
+@ResponseBody
+public CustomerEntity getCustomerDetails(@RequestParam int customerId) {
+    return customerRepo.findById(customerId).orElseThrow(() -> new IllegalArgumentException("Invalid customer Id: " + customerId));
+}
 
 
 

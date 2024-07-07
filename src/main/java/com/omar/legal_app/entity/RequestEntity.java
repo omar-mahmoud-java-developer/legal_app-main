@@ -5,8 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.omar.legal_app.dto.Cases;
+import com.omar.legal_app.dto.PriorityLevel;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,29 +35,22 @@ public class RequestEntity {
     private String description;
     private Date requestDate;
     private Date responseDate;
-   private List<String> fileNames = new ArrayList<>();
-    @Column(name="Response")
-    private Response response;
-    @ManyToMany
-    @JoinTable(
-        name = "user_requests",
-        joinColumns = @JoinColumn(name = "request_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> users = new HashSet<>();
-  @OneToMany(mappedBy = "requestEntity")
-    private Set<Comments> comments = new HashSet<>();
- 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private CustomerEntity customer;
-    // Getters and setters
+    private List<String> fileNames = new ArrayList<>();
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getSelectedOption() {
+        return selectedOption;
+    }
+
+    public void setSelectedOption(String selectedOption) {
+        this.selectedOption = selectedOption;
     }
 
     public String getDescription() {
@@ -71,6 +69,14 @@ public class RequestEntity {
         this.requestDate = requestDate;
     }
 
+    public Date getResponseDate() {
+        return responseDate;
+    }
+
+    public void setResponseDate(Date responseDate) {
+        this.responseDate = responseDate;
+    }
+
     public List<String> getFileNames() {
         return fileNames;
     }
@@ -78,14 +84,37 @@ public class RequestEntity {
     public void setFileNames(List<String> fileNames) {
         this.fileNames = fileNames;
     }
-    
 
-    public Set<User> getUsers() {
-        return users;
+    public PriorityLevel getPriorityLevel() {
+        return priorityLevel;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setPriorityLevel(PriorityLevel priorityLevel) {
+        this.priorityLevel = priorityLevel;
+    }
+
+    public Cases getCases() {
+        return cases;
+    }
+
+    public void setCases(Cases cases) {
+        this.cases = cases;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public Response getResponse() {
@@ -96,32 +125,12 @@ public class RequestEntity {
         this.response = response;
     }
 
-    public Date getResponseDate() {
-        return responseDate;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setResponseDate(Date responseDate) {
-        this.responseDate = responseDate;
-    }
-
-    public String getSelectedOption() {
-        return selectedOption;
-    }
-
-    public void setSelectedOption(String selectedOption) {
-        this.selectedOption = selectedOption;
-    }
-
-
-    private String folderName;
-
-    // Getters and setters for folderName
-    public String getFolderName() {
-        return folderName;
-    }
-
-    public void setFolderName(String folderName) {
-        this.folderName = folderName;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public Set<Comments> getComments() {
@@ -132,8 +141,6 @@ public class RequestEntity {
         this.comments = comments;
     }
 
-
-
     public CustomerEntity getCustomer() {
         return customer;
     }
@@ -142,8 +149,41 @@ public class RequestEntity {
         this.customer = customer;
     }
 
+    public String getFolderName() {
+        return folderName;
+    }
 
-  
+    public void setFolderName(String folderName) {
+        this.folderName = folderName;
+    }
 
+    @Enumerated(EnumType.STRING)
+    private PriorityLevel priorityLevel;
+
+    @Enumerated(EnumType.STRING)
+    private Cases cases;
+
+    private Date startDate;
+    private Date endDate;
+
+    @Column(name="Response")
+    private Response response;
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_requests",
+        joinColumns = @JoinColumn(name = "request_id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> users = new HashSet<>();
+
+    @OneToMany(mappedBy = "requestEntity")
+    private Set<Comments> comments = new HashSet<>();
+ 
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
+
+    private String folderName;
 
 }

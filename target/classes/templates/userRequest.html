@@ -35,6 +35,7 @@
                     <th class="table-header">Comments</th>
                     <th class="table-header">File Names</th>
                     <th class="table-header">Customer Details</th>
+                    <th class="table-header">Request Details</th>
                     <th class="table-header">Actions</th>
                 </tr>
             </thead>
@@ -60,12 +61,17 @@
                             View Details
                         </button>
                     </td>
+                    <td class="table-cell">
+                    <button class="btn btn-info" th:data-toggle="modal" th:data-target="'#requestDetailsModal'" th:data-request-id="${request.id}">
+                        View Request
+                    </button>
+                </td>
                     <td class="table-cell actions-cell">
                         <div th:if="${request.response != T(com.omar.legal_app.entity.Response).COMPLETED}">
                             <a class="action-link edit-link" th:href="@{/request/edit(id=${request.id})}">Edit</a>
                             <a class="action-link delete-link" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
                         </div>
-                    </td>
+
                 </tr>
             </tbody>
         </table>
@@ -94,6 +100,28 @@
         </div>
     </div>
 
+    <!-- Request Details Modal -->
+    <div class="modal fade" id="requestDetailsModal" tabindex="-1" role="dialog" aria-labelledby="requestDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="requestDetailsModalLabel">Request Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Request details will be loaded here via AJAX -->
+                    
+                    <p><strong>Priority Level:</strong> <span id="requestPriorityLevel"></span></p>
+                    <p><strong>Case Type:</strong> <span id="requestCaseType"></span></p>
+                    <p><strong>Start Date:</strong> <span id="requestStartDate"></span></p>
+                    <p><strong>End Date:</strong> <span id="requestEndDate"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         $('#customerDetailsModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);
@@ -113,6 +141,26 @@
                 },
                 error: function() {
                     alert('Failed to load customer details.');
+                }
+            });
+        });
+
+        $('#requestDetailsModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var requestId = button.data('request-id');
+
+            $.ajax({
+                url: '/request/details',
+                method: 'GET',
+                data: { requestId: requestId },
+                success: function(data) {
+                    $('#requestPriorityLevel').text(data.priorityLevel);
+                    $('#requestCaseType').text(data.cases);
+                    $('#requestStartDate').text(data.startDate);
+                    $('#requestEndDate').text(data.endDate);
+                },
+                error: function() {
+                    alert('Failed to load request details.');
                 }
             });
         });

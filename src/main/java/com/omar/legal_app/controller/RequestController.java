@@ -69,7 +69,7 @@ public class RequestController {
         this.userRepository = userRepository;
     }
 
- 
+
 
     @GetMapping("/list")
     public String showRequestList(Model model, Principal principal) {
@@ -77,6 +77,9 @@ public class RequestController {
         User currentUser = userRepository.findByEmail(username);
         List<RequestEntity> userRequests = requestRepo.findByUsers(currentUser);
         model.addAttribute("requests", userRequests);
+    
+      
+
         return "userRequest"; 
     }
 
@@ -238,6 +241,10 @@ public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, Bindin
     requestEntity.setFileNames(fileNames);
     requestEntity.setResponse(Response.PENDING);
     requestEntity.setFolderName(folderName);
+    requestEntity.setPriorityLevel(reuqesrDto.getPriorityLevel());
+    requestEntity.setCases(reuqesrDto.getCases());
+    requestEntity.setStartDate(reuqesrDto.getStartDate());
+    requestEntity.setEndDate(reuqesrDto.getEndDate());
 
     String username = principal.getName();
     User currentUser = userRepository.findByEmail(username);
@@ -365,6 +372,11 @@ public CustomerEntity getCustomerDetails(@RequestParam int customerId) {
 }
 
 
+@GetMapping("/details")
+@ResponseBody
+public RequestEntity getRequestDetails(@RequestParam int requestId) {
+    return requestRepo.findById(requestId).orElseThrow(() -> new IllegalArgumentException("Invalid request Id: " + requestId));
+}
 
 
 }

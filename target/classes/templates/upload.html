@@ -24,6 +24,24 @@
             <textarea id="fileDescription" th:field="*{description}" name="description" rows="4" placeholder="Enter a description for the files..." required></textarea>
             <p th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger" th:errors="*{description}"></p>
 
+            <label for="priorityLevel">Priority Level:</label>
+            <select id="priorityLevel" th:field="*{priorityLevel}" required>
+                <option th:each="level : ${T(com.omar.legal_app.dto.PriorityLevel).values()}"
+                        th:value="${level}" th:text="${level}"></option>
+            </select>
+
+            <label for="cases">Case Type:</label>
+            <select id="cases" th:field="*{cases}" required>
+                <option th:each="case : ${T(com.omar.legal_app.dto.Cases).values()}"
+                        th:value="${case}" th:text="${case}"></option>
+            </select>
+
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" th:field="*{startDate}" required>
+
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" th:field="*{endDate}" required>
+
             <label for="customer">Select Customer:</label>
             <select id="customer" th:field="*{customerId}" class="select2" required></select>
 
@@ -51,7 +69,6 @@
                                 return {
                                     id: customer.id,
                                     text: customer.name + ' - ' + customer.email 
-                                   
                                 };
                             })
                         };

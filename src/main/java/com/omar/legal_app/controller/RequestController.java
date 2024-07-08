@@ -226,7 +226,7 @@ public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, Bindin
             return "upload";
         }
         try {
-            String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            String fileName = file.getOriginalFilename();
             Path filePath = folderPath.resolve(fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             fileNames.add(fileName);

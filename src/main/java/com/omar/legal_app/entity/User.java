@@ -15,8 +15,8 @@ import jakarta.persistence.UniqueConstraint;
 public class User {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int  id;
 	private String email;
 	private String password;
 	private String role;
@@ -40,13 +40,7 @@ private Set<RequestEntity> requestEntities = new HashSet<>();
 		this.fullname = fullname;
 	}
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getEmail() {
 		return email;
@@ -95,6 +89,16 @@ private Set<RequestEntity> requestEntities = new HashSet<>();
     public void setRequestEntities(Set<RequestEntity> requestEntities) {
         this.requestEntities = requestEntities;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
 	
 	
 	

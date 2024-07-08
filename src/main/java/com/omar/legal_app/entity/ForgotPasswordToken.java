@@ -15,8 +15,8 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class ForgotPasswordToken {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	
 	@Column(nullable = false)
 	private String token;
@@ -31,13 +31,7 @@ public class ForgotPasswordToken {
 	@Column(nullable = false)
 	private boolean isUsed;
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getToken() {
 		return token;
@@ -70,6 +64,16 @@ public class ForgotPasswordToken {
 	public void setUsed(boolean isUsed) {
 		this.isUsed = isUsed;
 	}
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
 	
 	
 	

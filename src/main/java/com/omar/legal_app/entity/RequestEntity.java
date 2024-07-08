@@ -26,7 +26,7 @@ import jakarta.persistence.Table;
 public class RequestEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @Column(name = "selected_option")
     private String selectedOption;
@@ -37,13 +37,7 @@ public class RequestEntity {
     private Date responseDate;
     private List<String> fileNames = new ArrayList<>();
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getSelectedOption() {
         return selectedOption;
@@ -185,5 +179,13 @@ public class RequestEntity {
     private CustomerEntity customer;
 
     private String folderName;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
 }

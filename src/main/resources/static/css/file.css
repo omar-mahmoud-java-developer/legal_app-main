@@ -1,6 +1,6 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #F5F5F5; /* Cool White background */
+    font-family: 'Georgia', serif;
+    background-color: #FAF9F6; /* Very Light Gray background */
     margin: 0;
     padding: 0;
     display: flex;
@@ -11,55 +11,58 @@ body {
 
 .upload-form {
     background-color: #fff; /* White background */
-    padding: 20px 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+    padding: 30px 50px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
     width: 100%;
     text-align: center;
 }
 
 .upload-form h2 {
-    color: #333333; /* Charcoal Gray text */
-    margin-bottom: 20px;
+    color: #2C3E50; /* Dark Gray text */
+    margin-bottom: 25px;
+    font-size: 28px;
 }
 
 .upload-form label {
     display: block;
     text-align: left;
     margin-top: 20px;
-    color: #333333; /* Charcoal Gray text */
+    color: #2C3E50; /* Dark Gray text */
+    font-size: 18px;
 }
 
 .upload-form input[type="file"],
 .upload-form textarea,
-.upload-form select {
+.upload-form select,
+.upload-form input[type="date"] {
     width: calc(100% - 20px);
     margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #D3D3D3; /* Light Gray border */
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #BDC3C7; /* Light Gray border */
     font-size: 16px;
-    background-color: #F5F5F5; /* Cool White background */
-    color: #333333; /* Charcoal Gray text */
+    background-color: #F9F9F9; /* Very Light Gray background */
+    color: #2C3E50; /* Dark Gray text */
 }
 
 .upload-form button {
     display: block;
     width: calc(100% - 20px);
-    padding: 10px;
-    background-color: #1E90FF; /* Electric Blue button */
+    padding: 12px;
+    background-color: #2980B9; /* Blue button */
     color: #fff; /* White text */
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     margin-top: 20px;
-    font-size: 16px;
+    font-size: 18px;
     transition: background-color 0.3s, color 0.3s;
 }
 
 .upload-form button:hover {
-    background-color: #1A78D1; /* Darker Electric Blue on hover */
+    background-color: #216F99; /* Darker Blue on hover */
     color: #fff; /* Ensure text color stays white */
 }
 
@@ -73,10 +76,10 @@ body {
 .select2-container .select2-selection--single {
     height: 40px;
     padding: 6px 12px;
-    border: 1px solid #D3D3D3; /* Light Gray border */
+    border: 1px solid #BDC3C7; /* Light Gray border */
     border-radius: 5px;
-    background-color: #F5F5F5; /* Cool White background */
-    color: #333333; /* Charcoal Gray text */
+    background-color: #F9F9F9; /* Very Light Gray background */
+    color: #2C3E50; /* Dark Gray text */
     font-size: 16px;
 }
 

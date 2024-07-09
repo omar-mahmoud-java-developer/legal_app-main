@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-
 @Table(name = "Customer")
 public class CustomerEntity {
 
@@ -19,7 +18,7 @@ public class CustomerEntity {
     private String phone;
     private String idNational;
     private String company;
-    private String addres;
+    private String address;
 
     public int getId() {
         return id;
@@ -57,10 +56,10 @@ public class CustomerEntity {
     public void setCompany(String company) {
         this.company = company;
     }
-    public String getAddres() {
-        return addres;
+    public String getAddress() {
+        return address;
     }
-    public void setAddres(String addres) {
-        this.addres = addres;
+    public void setAddress(String addres) {
+        this.address = addres;
     }
 }

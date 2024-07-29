@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -27,20 +28,24 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.omar.legal_app.dto.DetilesDto;
+import com.omar.legal_app.dto.RequestDto;
+import com.omar.legal_app.dto.Response;
 import com.omar.legal_app.entity.Comments;
 import com.omar.legal_app.entity.CustomerEntity;
+import com.omar.legal_app.entity.RequestDetails;
 import com.omar.legal_app.entity.RequestEntity;
-import com.omar.legal_app.entity.Response;
-import com.omar.legal_app.entity.ReuqesrDto;
 import com.omar.legal_app.entity.User;
 import com.omar.legal_app.repository.CommentsRepository;
 import com.omar.legal_app.repository.CustomerRepo;
+import com.omar.legal_app.repository.DetilesRepo;
 import com.omar.legal_app.repository.RequestRepo;
 import com.omar.legal_app.repository.UserRepository;
 
@@ -62,6 +67,9 @@ public class RequestController {
     @Autowired
     private CommentsRepository commentsRepository;
 
+    @Autowired
+    private DetilesRepo detailsRepo;
+
     @GetMapping("/list")
     public String showRequestList(Model model, Principal principal) {
         String username = principal.getName();
@@ -80,11 +88,11 @@ public class RequestController {
 
     @GetMapping("/create")
     public String showRequest(Model model) {
-        ReuqesrDto reuqesrDto = new ReuqesrDto();
+        RequestDto requestDto = new RequestDto();
         List<CustomerEntity> customers = customerRepo.findAll();
-        model.addAttribute("reuqesrDto", reuqesrDto);
+        model.addAttribute("requestDto", requestDto); // Ensure this line is present
         model.addAttribute("customers", customers);
-        return "upload";
+        return "upload"; // Ensure this matches your Thymeleaf template name
     }
 
     @GetMapping("/delete")
@@ -100,111 +108,96 @@ public class RequestController {
         return "redirect:/request/list";
     }
 
-    @GetMapping("/edit")
-    public String showEditRequestPage(@RequestParam int id, Model model) {
-        try {
-            RequestEntity requestEntity = requestRepo.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
-            ReuqesrDto reuqesrDto = new ReuqesrDto();
-            reuqesrDto.setDescription(requestEntity.getDescription());
-            model.addAttribute("reuqesrDto", reuqesrDto);
-            model.addAttribute("requestId", id);
-        } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
-            return "redirect:/request/list";
-        }
-        return "editpage";
-    }
 
-    @PostMapping("/edit")
-    public String updateRequest(@RequestParam int id, @Valid @ModelAttribute ReuqesrDto reuqesrDto, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            model.addAttribute("reuqesrDto", reuqesrDto);
-            model.addAttribute("requestId", id);
-            return "editpage";
-        }
-        try {
-            RequestEntity requestEntity = requestRepo.findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
-            if (reuqesrDto.getDescription() != null) {
-                requestEntity.setDescription(reuqesrDto.getDescription());
-            }
-            if (!reuqesrDto.getFiles().isEmpty()) {
-                List<String> fileNames = new ArrayList<>();
-                String folderName = requestEntity.getFolderName();
-                Path folderPath = Paths.get("uploaded-files", folderName);
-                if (!Files.exists(folderPath)) {
-                    Files.createDirectories(folderPath);
-                }
-                for (MultipartFile file : reuqesrDto.getFiles()) {
-                    String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-                    fileNames.add(fileName);
-                    try {
-                        Path filePath = folderPath.resolve(fileName);
-                        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-                    } catch (IOException e) {
-                        throw new RuntimeException("Failed to save file", e);
-                    }
-                }
-                requestEntity.setFileNames(fileNames);
-            }
-            requestRepo.save(requestEntity);
-        } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
-            return "redirect:/request/list";
-        }
-        return "redirect:/request/list";
-    }
 
     @PostMapping("/create")
-    public String createRequest(@Valid @ModelAttribute ReuqesrDto reuqesrDto, BindingResult result, Model model, Principal principal) {
-        if (reuqesrDto.getFiles().isEmpty()) {
-            result.addError(new FieldError("reuqesrDto", "files", "File is required"));
+    public String createRequest(@Valid @ModelAttribute("requestDto") RequestDto requestDto, BindingResult result,
+                                @RequestParam("files") MultipartFile[] files, Model model, Principal principal) {
+        // Check if files are empty
+        if (files.length == 0 || (files.length == 1 && files[0].isEmpty())) {
+            result.addError(new FieldError("requestDto", "files", "File is required"));
         }
+
+        // Log any binding errors
         if (result.hasErrors()) {
             List<CustomerEntity> customers = customerRepo.findAll();
-            model.addAttribute("reuqesrDto", reuqesrDto);
+            model.addAttribute("requestDto", requestDto);
             model.addAttribute("customers", customers);
+            for (FieldError error : result.getFieldErrors()) {
+                System.out.println("Field Error: " + error.getField() + " - " + error.getDefaultMessage());
+            }
             return "upload";
         }
+
+        // Create the directory to store files
         String folderName = UUID.randomUUID().toString();
         Path folderPath = Paths.get("uploaded-files", folderName);
         try {
             Files.createDirectories(folderPath);
         } catch (IOException e) {
+            System.out.println("Failed to create directory: " + e.getMessage());
             throw new RuntimeException("Failed to create directory", e);
         }
+
+        // Save each file
         List<String> fileNames = new ArrayList<>();
-        for (MultipartFile file : reuqesrDto.getFiles()) {
-            if (file.isEmpty()) {
-                result.addError(new FieldError("reuqesrDto", "files", "File is required"));
-                return "upload";
-            }
-            try {
-                String fileName = file.getOriginalFilename();
-                Path filePath = folderPath.resolve(fileName);
-                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-                fileNames.add(fileName);
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to save file", e);
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                try {
+                    String fileName = file.getOriginalFilename();
+                    Path filePath = folderPath.resolve(fileName);
+                    Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                    fileNames.add(fileName);
+                } catch (IOException e) {
+                    System.out.println("Failed to save file: " + e.getMessage());
+                    throw new RuntimeException("Failed to save file", e);
+                }
             }
         }
+
+        // Create the request entity
         RequestEntity requestEntity = new RequestEntity();
-        requestEntity.setDescription(reuqesrDto.getDescription());
+        requestEntity.setDescription(requestDto.getDescription());
         requestEntity.setRequestDate(new Date());
         requestEntity.setFileNames(fileNames);
         requestEntity.setResponse(Response.PENDING);
         requestEntity.setFolderName(folderName);
-        requestEntity.setPriorityLevel(reuqesrDto.getPriorityLevel());
-        requestEntity.setCases(reuqesrDto.getCases());
-        requestEntity.setStartDate(reuqesrDto.getStartDate());
-        requestEntity.setEndDate(reuqesrDto.getEndDate());
+
+        // Get current user
         String username = principal.getName();
         User currentUser = userRepository.findByEmail(username);
         requestEntity.getUsers().add(currentUser);
-        CustomerEntity customer = customerRepo.findById(reuqesrDto.getCustomerId()).orElseThrow(() -> new IllegalArgumentException("Invalid customer Id:" + reuqesrDto.getCustomerId()));
+
+        // Find the customer
+        CustomerEntity customer = customerRepo.findById(requestDto.getCustomerId())
+                                              .orElseThrow(() -> new IllegalArgumentException("Invalid customer Id:" + requestDto.getCustomerId()));
         requestEntity.setCustomer(customer);
-        requestRepo.save(requestEntity);
+
+        // Save the request entity
+        requestEntity = requestRepo.save(requestEntity);
+
+        // Save request details if any
+        if (requestDto.getDetails() != null && !requestDto.getDetails().isEmpty()) {
+            for (DetilesDto detail : requestDto.getDetails()) {
+              RequestDetails requestDetails = new RequestDetails();
+            requestDetails.setText(detail.getText());
+            requestDetails.setCases(detail.getCases());
+            requestDetails.setPriorityLevel(detail.getPriorityLevel());
+            requestDetails.setStartDate(detail.getStartDate());
+            requestDetails.setEndDate(detail.getEndDate());
+            requestDetails.setRequestEntity(requestEntity);
+            detailsRepo.save(requestDetails);
+            }
+        }
+
         return "redirect:/request/list";
+    }
+     @GetMapping("/details/{id}")
+    public String showRequestDetails(@PathVariable int id, Model model) {
+        RequestEntity requestEntity = requestRepo.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
+        model.addAttribute("request", requestEntity);
+        return "requestDetails";
     }
 
     @GetMapping("/download")
@@ -281,5 +274,107 @@ public class RequestController {
     @ResponseBody
     public RequestEntity getRequestDetails(@RequestParam int requestId) {
         return requestRepo.findById(requestId).orElseThrow(() -> new IllegalArgumentException("Invalid request Id: " + requestId));
+    }
+
+
+
+
+
+
+
+    @GetMapping("/edit")
+public String showEditForm(@RequestParam int id, Model model) {
+    try {
+        RequestEntity requestEntity = requestRepo.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
+        RequestDto requestDto = convertToDto(requestEntity);
+        requestDto.setId(id); // Ensure the id is set in the DTO
+        model.addAttribute("requestDto", requestDto);
+    } catch (Exception e) {
+        System.out.println("Exception: " + e.getMessage());
+        return "redirect:/request/list";
+    }
+    return "editpage"; // Ensure this matches your Thymeleaf template name
+}
+
+
+    // Method to handle the form submission
+    @PostMapping("/edit")
+    public String editRequest(@Valid @ModelAttribute("requestDto") RequestDto requestDto, BindingResult result,
+                              @RequestParam("files") MultipartFile[] files, Model model, Principal principal) {
+        if (result.hasErrors()) {
+            model.addAttribute("requestDto", requestDto);
+            return "editDetails";
+        }
+    
+        Optional<RequestEntity> optionalRequestEntity = requestRepo.findById(requestDto.getId());
+        if (optionalRequestEntity.isEmpty()) {
+            throw new IllegalArgumentException("Invalid request Id: " + requestDto.getId());
+        }
+    
+        RequestEntity requestEntity = optionalRequestEntity.get();
+        requestEntity.setDescription(requestDto.getDescription());
+        requestEntity.setFolderName(requestDto.getFolderName());
+    
+        if (files != null && files.length > 0 && !(files.length == 1 && files[0].isEmpty())) {
+            List<String> fileNames = new ArrayList<>();
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    try {
+                        String fileName = file.getOriginalFilename();
+                        Path filePath = Paths.get("uploaded-files", requestEntity.getFolderName(), fileName);
+                        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                        fileNames.add(fileName);
+                    } catch (IOException e) {
+                        throw new RuntimeException("Failed to save file", e);
+                    }
+                }
+            }
+            requestEntity.setFileNames(fileNames);
+        }
+    
+        if (requestDto.getDetails() != null && !requestDto.getDetails().isEmpty()) {
+            detailsRepo.deleteAll(requestEntity.getRequestDetails());
+            for (DetilesDto detail : requestDto.getDetails()) {
+                RequestDetails requestDetails = new RequestDetails();
+                requestDetails.setText(detail.getText());
+                requestDetails.setCases(detail.getCases());
+                requestDetails.setPriorityLevel(detail.getPriorityLevel());
+                requestDetails.setStartDate(detail.getStartDate());
+                requestDetails.setEndDate(detail.getEndDate());
+                requestDetails.setRequestEntity(requestEntity);
+                detailsRepo.save(requestDetails);
+            }
+        }
+    
+        requestRepo.save(requestEntity);
+        return "redirect:/request/list";
+    }
+    
+
+
+    private RequestDto convertToDto(RequestEntity requestEntity) {
+        RequestDto requestDto = new RequestDto();
+  
+        requestDto.setDescription(requestEntity.getDescription());
+        requestDto.setFolderName(requestEntity.getFolderName());
+   
+
+        List<DetilesDto> details = requestEntity.getRequestDetails().stream()
+                .map(this::convertToDetailDto)
+                .collect(Collectors.toList());
+        requestDto.setDetails(details);
+
+        return requestDto;
+    }
+
+    private DetilesDto convertToDetailDto(RequestDetails requestDetails) {
+        DetilesDto detailDto = new DetilesDto();
+        detailDto.setText(requestDetails.getText());
+        detailDto.setCases(requestDetails.getCases());
+        detailDto.setPriorityLevel(requestDetails.getPriorityLevel());
+        detailDto.setStartDate(requestDetails.getStartDate());
+        detailDto.setEndDate(requestDetails.getEndDate());
+        return detailDto;
     }
 }

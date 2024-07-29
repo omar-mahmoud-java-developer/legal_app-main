@@ -1,92 +1,181 @@
-body {
-    font-family: 'Georgia', serif;
-    background-color: #FAF9F6; /* Very Light Gray background */
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+/* Color Scheme */
+:root {
+    --primary-color: #1A78D1; /* Blue */
+    --secondary-color: #333333; /* Dark Gray */
+    --background-color: #F5F5F5; /* Light Gray */
+    --text-color: #333333; /* Dark Gray */
+    --highlight-color: #FFFFFF; /* White */
 }
 
-.upload-form {
-    background-color: #fff; /* White background */
-    padding: 30px 50px;
-    border-radius: 15px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
+/* General Styles */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 86%;
+    margin: 60px auto;
+    padding: 20px;
+    background-color: var(--highlight-color);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+/* Header and Navigation Styles */
+header {
+    background-color: var(--secondary-color);
+    color: var(--highlight-color);
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: var(--highlight-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+textarea, select, input[type="file"], input[type="text"], input[type="date"] {
     width: 100%;
+    padding: 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+input[type="file"] {
+    padding: 5px;
+}
+
+/* Table Styles */
+#details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#details-table th, #details-table td {
+    border: 1px solid var(--secondary-color);
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
     text-align: center;
 }
 
-.upload-form h2 {
-    color: #2C3E50; /* Dark Gray text */
-    margin-bottom: 25px;
-    font-size: 28px;
+#details-table th {
+    background-color: var(--secondary-color);
+    color: var(--highlight-color);
+    text-align: center;
+    text-transform: uppercase;
 }
 
-.upload-form label {
-    display: block;
-    text-align: left;
-    margin-top: 20px;
-    color: #2C3E50; /* Dark Gray text */
-    font-size: 18px;
+#details-table tr:nth-child(even) {
+    background-color: var(--background-color);
 }
 
-.upload-form input[type="file"],
-.upload-form textarea,
-.upload-form select,
-.upload-form input[type="date"] {
-    width: calc(100% - 20px);
-    margin: 10px 0;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #BDC3C7; /* Light Gray border */
-    font-size: 16px;
-    background-color: #F9F9F9; /* Very Light Gray background */
-    color: #2C3E50; /* Dark Gray text */
+.btn-delete:hover {
+    background-color: red;
 }
 
-.upload-form button {
-    display: block;
-    width: calc(100% - 20px);
-    padding: 12px;
-    background-color: #2980B9; /* Blue button */
-    color: #fff; /* White text */
+/* Button Styles */
+.btn {
+    padding: 10px 30px;
     border: none;
-    border-radius: 8px;
+    border-radius: 9px;
     cursor: pointer;
-    margin-top: 20px;
-    font-size: 18px;
-    transition: background-color 0.3s, color 0.3s;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
 }
 
-.upload-form button:hover {
-    background-color: #216F99; /* Darker Blue on hover */
-    color: #fff; /* Ensure text color stays white */
+.btn-submit {
+    background-color: var(--primary-color);
+    color: var(--highlight-color);
+    align-self: flex-start;
 }
 
-@media screen and (max-width: 768px) {
-    .upload-form {
-        padding: 20px;
+.btn-add {
+    background-color: var(--secondary-color);
+    color: var(--highlight-color);
+    display: block;
+    margin: auto;
+    margin-bottom: 10px;
+}
+.erc{
+text-align: center;
+
+}
+
+.row {
+    margin: 15px;
+}
+
+.btn-delete {
+    background-color: var(--secondary-color);
+    color: var(--highlight-color);
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* Footer Styles */
+footer {
+    padding: 1% 5%;
+    text-align:center;
+    background-color: #373B44;
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 15px;
     }
-}
 
-/* Additional styles for Select2 */
-.select2-container .select2-selection--single {
-    height: 40px;
-    padding: 6px 12px;
-    border: 1px solid #BDC3C7; /* Light Gray border */
-    border-radius: 5px;
-    background-color: #F9F9F9; /* Very Light Gray background */
-    color: #2C3E50; /* Dark Gray text */
-    font-size: 16px;
-}
+    form {
+        gap: 15px;
+    }
 
-.select2-container .select2-selection--single .select2-selection__rendered {
-    line-height: 26px; /* Adjust line height for better alignment */
-}
+    #details-table th, #details-table td {
+        padding: 8px;
+        font-size: 12px;
+    }
 
-.select2-container .select2-selection--single .select2-selection__arrow {
-    height: 36px; /* Adjust arrow height */
+    .btn {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
 }

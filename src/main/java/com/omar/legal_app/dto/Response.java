@@ -1,4 +1,4 @@
-package com.omar.legal_app.entity;
+package com.omar.legal_app.dto;
 
 public enum Response {
 

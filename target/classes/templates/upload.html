@@ -1,82 +1,155 @@
-<!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" th:href="@{../css/file.css}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Upload Page</title>
-    <!-- Add jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!-- Add Select2 CSS and JS -->
+    <link rel="stylesheet" th:href="@{../css/file.css}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body>
-    <div class="upload-form">
-        <h2>Upload Files</h2>
-        <form th:action="@{/request/create}" th:object="${reuqesrDto}" method="POST" enctype="multipart/form-data">
-            <label for="fileUpload">Choose files:</label>
-            <input type="file" id="fileUpload" th:field="*{files}" name="files" multiple required>
-            <p th:if="${#fields.hasErrors('files')}" th:errorclass="text-danger" th:errors="*{files}"></p>
+    <header>
+   
 
-            <label for="fileDescription">File description:</label>
-            <textarea id="fileDescription" th:field="*{description}" name="description" rows="4" placeholder="Enter a description for the files..." required></textarea>
-            <p th:if="${#fields.hasErrors('description')}" th:errorclass="text-danger" th:errors="*{description}"></p>
+        <div class="pos-f-t">
+            <div class="collapse" id="navbarToggleExternalContent">
+              <div class="bg-dark p-4">
+                <h4 class="text-white">E R C</h4>
+               
+                    <li><a href="#">Home</a></li>
+                    <li><a href="/request/list">Go Back</a></li>
+                    <li><a th:href="@{/logout}" class="logout-link">Logout</a></li>
+               
+              </div>
+            </div>
+            <nav class="navbar navbar-dark bg-dark">
+                <h2 class="erc">E R C</h2>
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            </nav>
+          </div>
 
-            <label for="priorityLevel">Priority Level:</label>
-            <select id="priorityLevel" th:field="*{priorityLevel}" required>
-                <option th:each="level : ${T(com.omar.legal_app.dto.PriorityLevel).values()}"
-                        th:value="${level}" th:text="${level}"></option>
-            </select>
+    
+    </header>
 
-            <label for="cases">Case Type:</label>
-            <select id="cases" th:field="*{cases}" required>
-                <option th:each="case : ${T(com.omar.legal_app.dto.Cases).values()}"
-                        th:value="${case}" th:text="${case}"></option>
-            </select>
-
-            <label for="startDate">Start Date:</label>
-            <input type="date" id="startDate" th:field="*{startDate}" required>
-
-            <label for="endDate">End Date:</label>
-            <input type="date" id="endDate" th:field="*{endDate}" required>
-
-            <label for="customer">Select Customer:</label>
-            <select id="customer" th:field="*{customerId}" class="select2" required></select>
-
-            <button type="submit">Upload</button>
+    <div class="container">
+        <form action="#" th:action="@{/request/create}" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" th:value="${requestDto.description}"></textarea>
+            </div>
+            <div>
+                <label for="customerId">Customer:</label>
+                <select id="customerId" name="customerId">
+                    <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}"></option>
+                </select>
+            </div>
+            <div>
+                <label for="files">Files:</label>
+                <input type="file" id="files" name="files" multiple />
+            </div>
+            <div>
+                <h3>Request Details</h3>
+                <table id="details-table">
+                    <thead>
+                        <tr>
+                            <th>Text</th>
+                            <th>Cases</th>
+                            <th>Priority Level</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="detail-row">
+                            <td><input type="text" name="details[0].text" placeholder="Text" /></td>
+                            <td>
+                                <select name="details[0].cases">
+                                    <option value="Criminal">Criminal</option>
+                                    <option value="Civil">Civil</option>
+                                    <option value="ContractDisputes">Contract Disputes</option>
+                                    <option value="Appeals">Appeals</option>
+                                    <option value="Lawsuit">Lawsuit</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="details[0].priorityLevel">
+                                    <option value="URGENT">URGENT</option>
+                                    <option value="HIGH">HIGH</option>
+                                    <option value="NORMAL">NORMAL</option>
+                                    <option value="LOW">LOW</option>
+                                </select>
+                            </td>
+                            <td><input type="date" name="details[0].startDate" /></td>
+                            <td><input type="date" name="details[0].endDate" /></td>
+                            <td><button type="button" class="btn btn-delete">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <button type="button" class="btn btn-add" id="add-detail-row">Add Row</button>
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-submit">Submit</button>
+            </div>
         </form>
     </div>
 
+    <footer>
+        <p>&copy; 2024 | Current time: <span id="current-time"></span></p>
+    </footer>
+
     <script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Select a customer",
-            allowClear: true,
-            ajax: {
-                url: '/request/searchCustomers',
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        query: params.term
-                    };
-                },
-                processResults: function (data) {
-                    return {
-                        results: $.map(data, function (customer) {
-                            return {
-                                id: customer.id,
-                                text: customer.name + ' - ' + customer.email 
-                            };
-                        })
-                    };
-                },
-                cache: true
+        $(document).ready(function() {
+            $('#add-detail-row').on('click', function() {
+                var index = $('.detail-row').length;
+                var detailRow = `
+                    <tr class="detail-row">
+                        <td><input type="text" name="details[` + index + `].text" placeholder="Text" /></td>
+                        <td>
+                            <select name="details[` + index + `].cases">
+                                <option value="Criminal">Criminal</option>
+                                <option value="Civil">Civil</option>
+                                <option value="ContractDisputes">Contract Disputes</option>
+                                <option value="Appeals">Appeals</option>
+                                <option value="Lawsuit">Lawsuit</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="details[` + index + `].priorityLevel">
+                                <option value="URGENT">URGENT</option>
+                                <option value="HIGH">HIGH</option>
+                                <option value="NORMAL">NORMAL</option>
+                                <option value="LOW">LOW</option>
+                            </select>
+                        </td>
+                        <td><input type="date" name="details[` + index + `].startDate" /></td>
+                        <td><input type="date" name="details[` + index + `].endDate" /></td>
+                        <td><button type="button" class="btn btn-delete">Delete</button></td>
+                    </tr>`;
+                $('#details-table tbody').append(detailRow);
+            });
+
+            $('#details-table').on('click', '.btn-delete', function() {
+                $(this).closest('tr').remove();
+            });
+
+            function updateTime() {
+                var now = new Date();
+                $('#current-time').text(now.toLocaleTimeString());
             }
+
+            setInterval(updateTime, 1000);
+            updateTime();
         });
-    });
-</script>
+    </script>
 </body>
 </html>

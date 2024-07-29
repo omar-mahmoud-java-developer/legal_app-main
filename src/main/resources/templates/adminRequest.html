@@ -48,7 +48,7 @@
                         <form method="post" action="/request/updateResponse">
                             <input type="hidden" name="requestId" th:value="${request.id}" />
                             <select name="response">
-                                <option th:each="resp : ${T(com.omar.legal_app.entity.Response).values()}"
+                                <option th:each="resp : ${T(com.omar.legal_app.dto.Response).values()}"
                                         th:value="${resp}" th:text="${#strings.capitalize(resp.toString().toLowerCase())}"
                                         th:selected="${resp == request.response}">
                                 </option>
@@ -75,9 +75,7 @@
                         </button>
                     </td>
                     <td class="table-cell">
-                    <button class="btn btn-info" th:data-toggle="modal" th:data-target="'#requestDetailsModal'" th:data-request-id="${request.id}">
-                        View Request
-                    </button>
+                        <a th:href="@{/request/details/{id}(id=${request.id})}">View Details</a>
                 </td>
                     <td class="table-cell actions-cell">
                         <a class="link-download" th:href="@{/request/download(folderName=${request.folderName})}">Download</a>

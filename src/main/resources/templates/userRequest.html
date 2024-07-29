@@ -62,12 +62,10 @@
                         </button>
                     </td>
                     <td class="table-cell">
-                    <button class="btn btn-info" th:data-toggle="modal" th:data-target="'#requestDetailsModal'" th:data-request-id="${request.id}">
-                        View Request
-                    </button>
+                        <a th:href="@{/request/details/{id}(id=${request.id})}">View Details</a>
                 </td>
                     <td class="table-cell actions-cell">
-                        <div th:if="${request.response != T(com.omar.legal_app.entity.Response).COMPLETED}">
+                        <div th:if="${request.response != T(com.omar.legal_app.dto.Response).COMPLETED}">
                             <a class="action-link edit-link" th:href="@{/request/edit(id=${request.id})}">Edit</a>
                             <a class="action-link delete-link" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
                         </div>

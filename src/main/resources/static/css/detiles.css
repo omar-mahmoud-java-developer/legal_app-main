@@ -1,0 +1,147 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #F5F5F5; /* Cool White */
+    color: #333333; /* Charcoal Gray */
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Header Styles */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333333; /* Charcoal Gray */
+}
+
+h2 {
+    font-size: 20px;
+    color: #1E90FF; /* Electric Blue */
+}
+
+/* Content Styles */
+div {
+    background-color: #FFFFFF; /* Pure White */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+strong {
+    color: #1E90FF; /* Electric Blue */
+}
+
+/* List Styles */
+ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+ul li {
+    background-color: #F5F5F5; /* Cool White */
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    color: #333333; /* Charcoal Gray */
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+thead {
+    background-color: #333333; /* Charcoal Gray */
+    color: #F5F5F5; /* Cool White */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #F5F5F5; /* Cool White */
+}
+
+tbody tr:hover {
+    background-color: #D3D3D3; /* Light Gray */
+}
+
+/* Link Styles */
+a {
+    display: inline-block;
+    background-color: #1E90FF; /* Electric Blue */
+    color: #F5F5F5; /* Cool White */
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-top: 20px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+a:hover {
+    background-color: #008080; /* Urban Teal */
+    transform: scale(1.05);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1, h2 {
+        font-size: 18px;
+    }
+
+    p, th, td {
+        font-size: 14px;
+    }
+
+    a {
+        font-size: 12px;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1, h2 {
+        font-size: 16px;
+    }
+
+    p, th, td {
+        font-size: 12px;
+    }
+
+    a {
+        font-size: 10px;
+        padding: 6px 12px;
+    }
+}

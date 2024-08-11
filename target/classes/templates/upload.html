@@ -1,44 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Upload Page</title>
     <link rel="stylesheet" th:href="@{../css/file.css}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{../css/Handf.css}">
+ 
 </head>
 <body>
-    <header>
-   
+    <div th:replace="header.html :: header"></div>
 
-        <div class="pos-f-t">
-            <div class="collapse" id="navbarToggleExternalContent">
-              <div class="bg-dark p-4">
-                <h4 class="text-white">E R C</h4>
-               
-                    <li><a href="#">Home</a></li>
-                    <li><a href="/request/list">Go Back</a></li>
-                    <li><a th:href="@{/logout}" class="logout-link">Logout</a></li>
-               
-              </div>
-            </div>
-            <nav class="navbar navbar-dark bg-dark">
-                <h2 class="erc">E R C</h2>
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-            </nav>
-          </div>
-
-    
-    </header>
-
-    <div class="container">
+    <div class="con">
         <form action="#" th:action="@{/request/create}" method="POST" enctype="multipart/form-data">
             <div>
                 <label for="description">Description:</label>
@@ -103,9 +90,7 @@
         </form>
     </div>
 
-    <footer>
-        <p>&copy; 2024 | Current time: <span id="current-time"></span></p>
-    </footer>
+    <div th:replace="footer.html :: footer"></div>
 
     <script>
         $(document).ready(function() {
@@ -142,13 +127,7 @@
                 $(this).closest('tr').remove();
             });
 
-            function updateTime() {
-                var now = new Date();
-                $('#current-time').text(now.toLocaleTimeString());
-            }
-
-            setInterval(updateTime, 1000);
-            updateTime();
+            
         });
     </script>
 </body>

@@ -5,8 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Our Web App</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" th:href="@{../css/Handf.css}">
+    <script>
+        // Redirect to userrequest after 5 seconds
+        setTimeout(function() {
+            window.location.href = "/request/list";
+        }, 2000);
+    </script>
 </head>
 <body>
+
     <div class="image-background"></div>
     <header>
         <h1>ERC Web App</h1>

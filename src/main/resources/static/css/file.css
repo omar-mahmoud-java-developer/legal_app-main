@@ -16,7 +16,7 @@ body {
     padding: 0;
 }
 
-.container {
+.con {
     width: 86%;
     margin: 60px auto;
     padding: 20px;
@@ -26,35 +26,15 @@ body {
     box-sizing: border-box;
 }
 
-/* Header and Navigation Styles */
-header {
-    background-color: var(--secondary-color);
-    color: var(--highlight-color);
-    padding: 10px 0;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    justify-content: center;
+* {
     margin: 0;
     padding: 0;
-}
-
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: var(--highlight-color);
     text-decoration: none;
-    font-weight: bold;
-}
+    list-style: none;
+  }
+  
 
-nav ul li a:hover {
-    text-decoration: underline;
-}
-
+  
 /* Form Styles */
 form {
     display: flex;
@@ -150,17 +130,11 @@ text-align: center;
     opacity: 0.9;
 }
 
-/* Footer Styles */
-footer {
-    padding: 1% 5%;
-    text-align:center;
-    background-color: #373B44;
-    color: white;
-}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .container {
+    .con {
         width: 90%;
         padding: 15px;
     }

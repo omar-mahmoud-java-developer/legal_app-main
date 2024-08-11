@@ -1,0 +1,21 @@
+.clock-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+.clock {
+  font-size: 1.5em;
+  margin: 0 20px;
+}
+.footer {
+  margin-top: 30px;
+  font-size: 0.9em;
+  color: #666;
+}
+.navbar-custom {
+  background-color: #333;
+}
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-nav .nav-link {
+  color: #c4c4c4;
+}

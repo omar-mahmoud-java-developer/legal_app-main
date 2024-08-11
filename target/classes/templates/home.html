@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{../css/home.css}">
+    <link rel="stylesheet" th:href="@{../css/Handf.css}">
+    
+</head>
+<body>
+    <div th:replace="header.html :: header"></div>
+    <div class="container">
+        <h1><i class="fas fa-chart-bar"></i> Number of Requests Per Day</h1>
+        <div class="chart-container">
+            <div class="chart">
+                <canvas id="barChart"></canvas>
+            </div>
+            <div class="chart">
+                <canvas id="responseChart"></canvas>
+            </div>
+        </div>
+        
+    </div>
+    <div th:replace="footer.html :: footer"></div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var labels = /*[[${labels}]]*/ [];
+        var data1 = /*[[${data1}]]*/ [];
+        var responseLabels = /*[[${responseLabels}]]*/ [];
+        var responseData = /*[[${responseData}]]*/ [];
+
+        // Bar Chart
+        var ctx1 = document.getElementById('barChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Requests per Day',
+                    data: data1,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Response Chart
+        var ctx4 = document.getElementById('responseChart').getContext('2d');
+        new Chart(ctx4, {
+            type: 'bar',
+            data: {
+                labels: responseLabels,
+                datasets: [{
+                    label: 'Requests by Response',
+                    data: responseData,
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Clock Functionality
+
+        /*]]>*/
+    </script>
+  
+ 
+ 
+</body>
+</html>

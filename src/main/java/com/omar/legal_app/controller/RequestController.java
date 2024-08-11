@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -48,6 +49,7 @@ import com.omar.legal_app.repository.CustomerRepo;
 import com.omar.legal_app.repository.DetilesRepo;
 import com.omar.legal_app.repository.RequestRepo;
 import com.omar.legal_app.repository.UserRepository;
+import com.omar.legal_app.service.RequestService;
 
 import jakarta.validation.Valid;
 
@@ -69,7 +71,9 @@ public class RequestController {
 
     @Autowired
     private DetilesRepo detailsRepo;
-
+    
+    @Autowired
+    private RequestService requestService;
     @GetMapping("/list")
     public String showRequestList(Model model, Principal principal) {
         String username = principal.getName();
@@ -83,6 +87,7 @@ public class RequestController {
     public String showRequestAllList(Model model) {
         List<RequestEntity> requests = requestRepo.findAll(); 
         model.addAttribute("requests", requests);
+        requests.forEach(request -> System.out.println(request.getUsers())); 
         return "adminRequest"; // Ensure this is the correct view name
     }
 
@@ -377,4 +382,36 @@ public String showEditForm(@RequestParam int id, Model model) {
         detailDto.setEndDate(requestDetails.getEndDate());
         return detailDto;
     }
+
+ 
+    @GetMapping("/requestGraph")
+    public String getRequestGraph(Model model) {
+        List<Map<String, Object>> requestCountsPerDay = requestRepo.findRequestCountsPerDay();
+        List<Map<String, Object>> requestCountsByResponse = requestRepo.findRequestCountsByResponse();
+
+        List<String> labels = requestCountsPerDay.stream()
+                .map(map -> map.get("date") != null ? map.get("date").toString() : "")
+                .collect(Collectors.toList());
+
+        List<Long> data1 = requestCountsPerDay.stream()
+                .map(map -> map.get("count") != null ? (Long) map.get("count") : 0L)
+                .collect(Collectors.toList());
+
+        List<String> responseLabels = requestCountsByResponse.stream()
+                .map(map -> map.get("response") != null ? map.get("response").toString() : "")
+                .collect(Collectors.toList());
+
+        List<Long> responseData = requestCountsByResponse.stream()
+                .map(map -> map.get("count") != null ? (Long) map.get("count") : 0L)
+                .collect(Collectors.toList());
+
+        model.addAttribute("labels", labels);
+        model.addAttribute("data1", data1);
+        model.addAttribute("responseLabels", responseLabels);
+        model.addAttribute("responseData", responseData);
+
+        return "home";
+    }
+    
+
 }

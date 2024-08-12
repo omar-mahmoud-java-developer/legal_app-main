@@ -127,30 +127,10 @@ body {
     background-color: #D3D3D3; /* Light Gray */
 }
 
-/* Footer Styles */
-.main-footer {
-    background-color: #333333; /* Charcoal Gray */
-    color: #F5F5F5; /* Cool White */
-    text-align: center;
-    padding: 10px; /* Smaller padding */
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-}
 
-.logout-link {
-    background-color: #D3D3D3; /* Light Gray */
-    color: #333333; /* Charcoal Gray */
-    margin-left: 10px; /* Adjust margin as needed */
-}
 
-.logout-link:hover {
-    background-color:#cc0000; /* Electric Blue */
-    transform: scale(1.05);
-}
 
-.action-link ,.link-download, .btn{
+.action-link {
     background-color: #1E90FF; /* Electric Blue */
     color: #F5F5F5; /* Cool White */
     padding: 8px 12px; /* Adjust padding for better size */
@@ -162,9 +142,15 @@ body {
     transition: background-color 0.3s, transform 0.3s;
     margin-left: 10px;
 }
-.action-link:hover,.link-download:hover,.btn:hover{
-     background-color:#cc0000;
-      transform: scale(1.05);
+.delete-link{
+    background-color:#cc0000;
+
+}
+.action-link:hover{
+ 
+ 
+      text-decoration: none;
+      color: #F5F5F5;
 }
 
 /* Comment Input Styles */

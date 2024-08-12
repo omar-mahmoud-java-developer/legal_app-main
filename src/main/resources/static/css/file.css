@@ -90,22 +90,27 @@ input[type="file"] {
 }
 
 /* Button Styles */
-.btn {
+
+
+.sub{
     padding: 10px 30px;
     border: none;
     border-radius: 9px;
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
-}
-
-.btn-submit {
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     color: var(--highlight-color);
     align-self: flex-start;
 }
 
-.btn-add {
+.add{
+    padding: 10px 30px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
     background-color: var(--secondary-color);
     color: var(--highlight-color);
     display: block;
@@ -123,10 +128,13 @@ text-align: center;
 
 .btn-delete {
     background-color: var(--secondary-color);
-    color: var(--highlight-color);
+    color: wheat;
 }
 
-.btn:hover {
+.add:hover {
+    opacity: 0.9;
+}
+.sub:hover {
     opacity: 0.9;
 }
 

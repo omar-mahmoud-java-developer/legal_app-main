@@ -1,0 +1,213 @@
+/* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: #F5F5F5;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+/* Header Styles */
+.main-header {
+    background-color: #333333;
+    color: #F5F5F5;
+    padding: 15px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header-title {
+    font-size: 24px;
+}
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.nav-content {
+    display: flex;
+    align-items: center;
+}
+
+.get-started-btn, .logout-link, .out, .action-link, .link-download, .btn {
+    background-color: #1E90FF;
+    color: #FFFFFF;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.get-started-btn:hover, .logout-link:hover, .out:hover, .action-link:hover, .link-download:hover, .btn:hover {
+    background-color: #008080;
+    transform: scale(1.05);
+}
+
+.out {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Adjust Select and Textarea Size */
+select[name="response"], textarea.comment-input {
+    font-size: 14px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 100%; /* عرض كامل داخل العنصر */
+    max-width: 100%;
+}
+
+/* Content Styles */
+.content {
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    margin: 25px auto;
+    padding: 20px;
+    max-width: 90%; /* تكييف العرض ليكون مناسبًا لجميع الشاشات */
+}
+
+/* Table Styles */
+.request-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table-header {
+    background-color: #333333;
+    color: #F5F5F5;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+    font-size: 16px;
+}
+
+.table-cell {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    word-wrap: break-word;
+    color: #333333;
+    font-size: 14px;
+}
+
+.actions-cell {
+    text-align: center;
+}
+
+.request-table tbody tr:hover {
+    background-color: #D3D3D3;
+}
+
+/* Footer Styles */
+.main-footer {
+    background-color: #333333;
+    color: #F5F5F5;
+    text-align: center;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* Responsive Styles */
+@media (max-width: 1280px) {
+    .content {
+        max-width: 95%;
+        padding: 20px;
+    }
+    
+    .table-header, .table-cell {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .header-title {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .content {
+        max-width: 98%;
+        padding: 18px;
+    }
+    
+    .table-header, .table-cell {
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    .header-title {
+        font-size: 20px;
+    }
+
+    .get-started-btn, .logout-link, .out, .action-link, .link-download, .btn {
+        font-size: 13px;
+        padding: 7px 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .content {
+        max-width: 100%;
+        padding: 15px;
+    }
+    
+    .table-header, .table-cell {
+        padding: 6px;
+        font-size: 12px;
+    }
+    
+    .header-title {
+        font-size: 18px;
+    }
+
+    .get-started-btn, .logout-link, .out, .action-link, .link-download, .btn {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .content {
+        padding: 10px;
+    }
+    
+    .table-header, .table-cell {
+        font-size: 11px;
+        padding: 5px;
+    }
+    
+    .header-title {
+        font-size: 16px;
+    }
+
+    .get-started-btn, .logout-link, .out, .action-link, .link-download, .btn {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+}

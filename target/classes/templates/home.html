@@ -25,8 +25,12 @@
             </div>
         </div>
         
+        <div class="new">
+            <canvas id="lineChart"></canvas>
+        </div>
+        
     </div>
-    <div th:replace="footer.html :: footer"></div>
+  
     <script th:inline="javascript">
         /*<![CDATA[*/
         var labels = /*[[${labels}]]*/ [];
@@ -66,6 +70,40 @@
                 maintainAspectRatio: false
             }
         });
+        // Line Chart (Requests over Time)
+var ctx2 = document.getElementById('lineChart').getContext('2d');
+new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: labels, // استخدم نفس الـlabels
+        datasets: [{
+            label: 'Requests Over Time',
+            data: data1, // استخدم نفس الـdata
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            fill: false
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                enabled: true
+            }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+    }
+});
+
 
         // Response Chart
         var ctx4 = document.getElementById('responseChart').getContext('2d');

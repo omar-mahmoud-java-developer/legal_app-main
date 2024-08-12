@@ -51,11 +51,11 @@
                     </td>
                     <td class="table-cell">
                         <button class="btn btn-info" th:data-toggle="modal" th:data-target="'#customerDetailsModal'" th:data-customer-id="${request.customer.id}">
-                            View Details
+                            Customer Detail
                         </button>
                     </td>
                     <td class="table-cell">
-                        <a th:href="@{/request/details/{id}(id=${request.id})}">View Details</a>
+                        <a  class="btn btn-info" th:href="@{/request/details/{id}(id=${request.id})}">Request Detail</a>
                 </td>
                     <td class="table-cell actions-cell">
                         <div th:if="${request.response != T(com.omar.legal_app.dto.Response).COMPLETED}">
@@ -112,7 +112,7 @@
             </div>
         </div>
     </div>
-    <div th:replace="footer.html :: footer"></div>
+   
         <script>
         $('#customerDetailsModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget);

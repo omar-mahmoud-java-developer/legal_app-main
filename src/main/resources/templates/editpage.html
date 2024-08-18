@@ -3,33 +3,20 @@
 <head>
     <title>Edit Request Details</title>
     <link rel="stylesheet" th:href="@{/css/file.css}">
+    <link rel="stylesheet" th:href="@{../css/Handf.css}">
+  
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body>
-    <header>
-        <div class="pos-f-t">
-            <div class="collapse" id="navbarToggleExternalContent">
-                <div class="bg-dark p-4">
-                    <h4 class="text-white">E R C</h4>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="/request/list">Go Back</a></li>
-                    <li><a th:href="@{/logout}" class="logout-link">Logout</a></li>
-                </div>
-            </div>
-            <nav class="navbar navbar-dark bg-dark">
-                <h2 class="erc">E R C</h2>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </nav>
-        </div>
-    </header>
-
-    <div class="container">
+  
+    <div th:replace="header.html :: header"></div>
+    <div class="con">
         <form th:action="@{/request/edit}" th:object="${requestDto}" method="post" enctype="multipart/form-data">
             <input type="hidden" th:field="*{id}" /> <!-- Include hidden id field -->
         
@@ -76,19 +63,17 @@
                     </tbody>
                 </table>
                 <div class="row">
-                    <button type="button" class="btn btn-add" id="add-detail-row">Add Row</button>
+                    <button type="button" class="add" id="add-detail-row">Add Row</button>
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-submit">Submit</button>
+                <button type="submit" class="sub">Submit</button>
             </div>
         </form>
         
     </div>
 
-    <footer>
-        <p>&copy; 2024 | Current time: <span id="current-time"></span></p>
-    </footer>
+
 
     <script>
         $(document).ready(function() {

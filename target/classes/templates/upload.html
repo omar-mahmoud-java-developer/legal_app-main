@@ -3,30 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Upload Page</title>
+    <title>Request Creation</title>
     <link rel="stylesheet" th:href="@{../css/Handf.css}">
     <link rel="stylesheet" th:href="@{../css/file.css}">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div th:replace="header.html :: header"></div>
+    <div th:replace="~{header.html :: header}"></div>
 
+    <!-- Request Form -->
     <div class="con">
-        <form action="#" th:action="@{/request/create}" method="POST" enctype="multipart/form-data">
+        <form th:action="@{/request/create}" method="POST" enctype="multipart/form-data">
             <div>
                 <label for="description">Description:</label>
                 <textarea id="description" name="description" th:value="${requestDto.description}"></textarea>
             </div>
             <div>
                 <label for="customerId">Customer:</label>
-                <select id="customerId" name="customerId">
+                <select id="customerId" name="customerId" class="form-control select2">
+                    <option></option>
                     <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}"></option>
                 </select>
             </div>
@@ -34,6 +31,14 @@
                 <label for="files">Files:</label>
                 <input type="file" id="files" name="files" multiple />
             </div>
+
+            <!-- Displaying File Names with Remove Option -->
+            <div id="file-names" style="margin-top: 10px;">
+                <p>Uploaded Files:</p>
+                <ul id="file-names-list"></ul> <!-- File names will be listed here -->
+            </div>
+            
+            <!-- Request Details Section -->
             <div>
                 <h3>Request Details</h3>
                 <table id="details-table">
@@ -77,18 +82,67 @@
                     <button type="button" class="add" id="add-detail-row">Add Row</button>
                 </div>
             </div>
+
             <div>
                 <button type="submit" class="sub">Submit</button>
             </div>
         </form>
     </div>
 
-
-    
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
-        $(document).ready(function() {
-            $('#add-detail-row').on('click', function() {
+       $(document).ready(function() {
+    var fileList = [];
+
+    // Handle file input changes to display file names
+    $('#files').on('change', function() {
+        var files = $(this)[0].files;
+
+        for (var i = 0; i < files.length; i++) {
+            fileList.push(files[i]); // Add each file to the fileList array
+        }
+
+        updateFileList(); // Update the file list display
+    });
+
+    // Function to display a file name with a delete button
+    function displayFile(file, index) {
+        var fileNameItem = `
+            <li data-index="${index}">
+                ${file.name} <button type="button" class="btn btn-sm btn-danger btn-remove-file" data-index="${index}">Remove</button>
+            </li>`;
+        $('#file-names-list').append(fileNameItem);
+    }
+
+    // Function to remove a file from the list
+    $('#file-names-list').on('click', '.btn-remove-file', function() {
+        var index = $(this).data('index');
+        fileList.splice(index, 1); // Remove the file from the fileList array
+
+        updateFileList(); // Rebuild the file list display after removal
+    });
+
+    // Function to update the file list display
+    function updateFileList() {
+        $('#file-names-list').empty(); // Clear the current list
+
+        // Re-display each file with the correct index
+        fileList.forEach(function(file, index) {
+            displayFile(file, index);
+        });
+    }
+
+
+
+          
+
+            // Function to add a new detail row
+            function addDetailRow() {
                 var index = $('.detail-row').length;
                 var detailRow = `
                     <tr class="detail-row">
@@ -115,13 +169,22 @@
                         <td><button type="button" class="btn btn-delete">Delete</button></td>
                     </tr>`;
                 $('#details-table tbody').append(detailRow);
-            });
+            }
 
+            // Handle adding a new row
+            $('#add-detail-row').on('click', addDetailRow);
+
+            // Handle deleting a row
             $('#details-table').on('click', '.btn-delete', function() {
                 $(this).closest('tr').remove();
             });
 
-            
+              // Initialize Select2
+              $('.select2').select2({
+                placeholder: "Select a customer",
+                allowClear: true
+            });
+
         });
     </script>
 </body>

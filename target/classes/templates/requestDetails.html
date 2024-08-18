@@ -11,7 +11,7 @@
         <p><strong>Description:</strong> <span th:text="${request.description}"></span></p>
         <p><strong>Request Date:</strong> <span th:text="${#dates.format(request.requestDate, 'yyyy-MM-dd')}"></span></p>
         <p><strong>Response Date:</strong> <span th:text="${#dates.format(request.responseDate, 'yyyy-MM-dd')}"></span></p>
-        <p><strong>Folder Name:</strong> <span th:text="${request.folderName}"></span></p>
+        
         <p><strong>Files:</strong></p>
         <ul>
             <li th:each="file : ${request.fileNames}" th:text="${file}"></li>

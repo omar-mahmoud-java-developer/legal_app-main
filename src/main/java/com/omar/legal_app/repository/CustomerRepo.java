@@ -9,6 +9,6 @@ import com.omar.legal_app.entity.CustomerEntity;
 
 @Repository
 public interface CustomerRepo extends JpaRepository<CustomerEntity, Integer> {
-    List<CustomerEntity> findByNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrPhoneContainingIgnoreCaseOrCompanyContainingIgnoreCase(
-        String name, String email, String phone, String company);
+    List<CustomerEntity> findByNameContainingIgnoreCaseOrCompanyContainingIgnoreCase(
+        String name, String company);
 }

@@ -99,7 +99,19 @@ private Set<RequestEntity> requestEntities = new HashSet<>();
     }
 
 
-	
+	@OneToMany(mappedBy = "user")
+	private Set<NotificationeEntity> notificationeEntity = new HashSet<>();
+
+
+	public Set<NotificationeEntity> getNotificationeEntity() {
+		return notificationeEntity;
+	}
+
+	public void setNotificationeEntity(Set<NotificationeEntity> notificationeEntity) {
+		this.notificationeEntity = notificationeEntity;
+	}
+
+
 	
 	
 	

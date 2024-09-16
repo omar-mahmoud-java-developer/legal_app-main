@@ -23,6 +23,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,6 +50,8 @@ import com.omar.legal_app.repository.CustomerRepo;
 import com.omar.legal_app.repository.DetilesRepo;
 import com.omar.legal_app.repository.RequestRepo;
 import com.omar.legal_app.repository.UserRepository;
+import com.omar.legal_app.service.NotificationService;
+import com.omar.legal_app.service.RequestService;
 
 import jakarta.validation.Valid;
 
@@ -58,7 +61,8 @@ public class RequestController {
 
     @Autowired
     private RequestRepo requestRepo;
-
+    @Autowired
+    private RequestService requestService;
     @Autowired
     private UserRepository userRepository;
     
@@ -71,7 +75,11 @@ public class RequestController {
     @Autowired
     private DetilesRepo detailsRepo;
     
-   
+  
+
+    @Autowired
+    private NotificationService emailService;
+
     
     @GetMapping("/list")
     public String showRequestList(Model model, Principal principal) {
@@ -79,6 +87,7 @@ public class RequestController {
         User currentUser = userRepository.findByEmail(username);
         List<RequestEntity> userRequests = requestRepo.findByUsers(currentUser);
         model.addAttribute("requests", userRequests);
+        
         return "userRequest"; 
     }
 
@@ -111,8 +120,6 @@ public class RequestController {
         }
         return "redirect:/request/list";
     }
-
-
 
     @PostMapping("/create")
     public String createRequest(@Valid @ModelAttribute("requestDto") RequestDto requestDto, BindingResult result,
@@ -246,19 +253,44 @@ public class RequestController {
         comment.setUser(adminUser);
         comment.setRequestEntity(requestOptional.get());
         commentsRepository.save(comment);
+   // Send email notification to the user
+        RequestEntity requestEntity = requestOptional.get();
+        User user = requestEntity.getUsers().iterator().next(); // Assuming one user per request
+        String subject = "New Comment Added to Your Request";
+        String emailContent = "The admin has added a comment to your request:\n\n" + commentText;
+
+        try {
+            emailService.sendEmail(user.getEmail(), subject, emailContent);
+        } catch (Exception e) {
+            System.out.println("Failed to send email: " + e.getMessage());
+        }
+
+
         return "redirect:/request/alist";
     }
 
     @PostMapping("/updateResponse")
-    public String updateResponse(@RequestParam("requestId") int requestId, @RequestParam("response") Response response) {
+    public String updateResponse(@RequestParam("requestId") int requestId, @RequestParam("response") Response response,Principal principal) {
+     
         Optional<RequestEntity> requestOptional = requestRepo.findById(requestId);
         if (requestOptional.isEmpty()) {
             return "redirect:/request/alist";
         }
         RequestEntity requestEntity = requestOptional.get();
         requestEntity.setResponse(response);
+       
         requestEntity.setResponseDate(Date.from(Instant.now()));
         requestRepo.save(requestEntity);
+
+        User user = requestEntity.getUsers().iterator().next(); // Assuming one user per request
+        String subject = "New Comment Added to Your Request";
+        String emailContent = "The admin has added a response to your request:\n\n" + response;
+
+        try {
+            emailService.sendEmail(user.getEmail(), subject, emailContent);
+        } catch (Exception e) {
+            System.out.println("Failed to send email: " + e.getMessage());
+        }
         return "redirect:/request/alist";
     }
 
@@ -280,13 +312,6 @@ public List<CustomerEntity> searchCustomers(@RequestParam String query) {
     public RequestEntity getRequestDetails(@RequestParam int requestId) {
         return requestRepo.findById(requestId).orElseThrow(() -> new IllegalArgumentException("Invalid request Id: " + requestId));
     }
-
-
-
-
-
-
-
     @GetMapping("/edit")
 public String showEditForm(@RequestParam int id, Model model) {
     try {
@@ -301,75 +326,75 @@ public String showEditForm(@RequestParam int id, Model model) {
     }
     return "editpage"; // Ensure this matches your Thymeleaf template name
 }
+@PostMapping("/edit")
+public String editRequest(@Valid @ModelAttribute("requestDto") RequestDto requestDto, BindingResult result,
+                          @RequestParam("files") MultipartFile[] files, Model model, Principal principal) {
+    if (result.hasErrors()) {
+        model.addAttribute("requestDto", requestDto);
+        return "editDetails";
+    }
 
+    Optional<RequestEntity> optionalRequestEntity = requestRepo.findById(requestDto.getId());
+    if (optionalRequestEntity.isEmpty()) {
+        throw new IllegalArgumentException("Invalid request Id: " + requestDto.getId());
+    }
 
-    // Method to handle the form submission
-    @PostMapping("/edit")
-    public String editRequest(@Valid @ModelAttribute("requestDto") RequestDto requestDto, BindingResult result,
-                              @RequestParam("files") MultipartFile[] files, Model model, Principal principal) {
-        if (result.hasErrors()) {
-            model.addAttribute("requestDto", requestDto);
-            return "editDetails";
-        }
-    
-        Optional<RequestEntity> optionalRequestEntity = requestRepo.findById(requestDto.getId());
-        if (optionalRequestEntity.isEmpty()) {
-            throw new IllegalArgumentException("Invalid request Id: " + requestDto.getId());
-        }
-    
-        RequestEntity requestEntity = optionalRequestEntity.get();
-        requestEntity.setDescription(requestDto.getDescription());
-        requestEntity.setFolderName(requestDto.getFolderName());
-    
-        if (files != null && files.length > 0 && !(files.length == 1 && files[0].isEmpty())) {
-            List<String> fileNames = new ArrayList<>();
-            for (MultipartFile file : files) {
-                if (!file.isEmpty()) {
-                    try {
-                        String fileName = file.getOriginalFilename();
-                        Path filePath = Paths.get("uploaded-files", requestEntity.getFolderName(), fileName);
-                        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-                        fileNames.add(fileName);
-                    } catch (IOException e) {
-                        throw new RuntimeException("Failed to save file", e);
-                    }
+    RequestEntity requestEntity = optionalRequestEntity.get();
+    requestEntity.setDescription(requestDto.getDescription());
+    requestEntity.setFolderName(requestDto.getFolderName());
+
+    // Handle file uploads
+    if (files != null && files.length > 0 && !(files.length == 1 && files[0].isEmpty())) {
+        List<String> fileNames = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                try {
+                    String fileName = file.getOriginalFilename();
+                    Path filePath = Paths.get("uploaded-files", requestEntity.getFolderName(), fileName);
+                    Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                    fileNames.add(fileName);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to save file", e);
                 }
             }
-            requestEntity.setFileNames(fileNames);
         }
-    
-        if (requestDto.getDetails() != null && !requestDto.getDetails().isEmpty()) {
-            detailsRepo.deleteAll(requestEntity.getRequestDetails());
-            for (DetilesDto detail : requestDto.getDetails()) {
-                RequestDetails requestDetails = new RequestDetails();
-                requestDetails.setText(detail.getText());
-                requestDetails.setCases(detail.getCases());
-                requestDetails.setPriorityLevel(detail.getPriorityLevel());
-                requestDetails.setStartDate(detail.getStartDate());
-                requestDetails.setEndDate(detail.getEndDate());
-                requestDetails.setRequestEntity(requestEntity);
-                detailsRepo.save(requestDetails);
-            }
-        }
-    
-        requestRepo.save(requestEntity);
-        return "redirect:/request/list";
+        requestEntity.setFileNames(fileNames);
     }
-    
+
+    // Handle request details
+    if (requestDto.getDetails() != null && !requestDto.getDetails().isEmpty()) {
+        // Clear existing details
+        requestEntity.getRequestDetails().clear();
+        detailsRepo.deleteAll(requestEntity.getRequestDetails());
+
+        // Add new details
+        for (DetilesDto detail : requestDto.getDetails()) {
+            RequestDetails requestDetail = new RequestDetails();
+            requestDetail.setText(detail.getText());
+            requestDetail.setCases(detail.getCases());
+            requestDetail.setPriorityLevel(detail.getPriorityLevel());
+            requestDetail.setStartDate(detail.getStartDate());
+            requestDetail.setEndDate(detail.getEndDate());
+            requestDetail.setRequestEntity(requestEntity);
+            requestEntity.getRequestDetails().add(requestDetail); // Add to entity's set
+        }
+    }
+
+    // Save the updated entity
+    requestRepo.save(requestEntity);
+
+    return "redirect:/request/list";
+}
 
 
     private RequestDto convertToDto(RequestEntity requestEntity) {
         RequestDto requestDto = new RequestDto();
-  
         requestDto.setDescription(requestEntity.getDescription());
         requestDto.setFolderName(requestEntity.getFolderName());
-   
-
         List<DetilesDto> details = requestEntity.getRequestDetails().stream()
                 .map(this::convertToDetailDto)
                 .collect(Collectors.toList());
         requestDto.setDetails(details);
-
         return requestDto;
     }
 
@@ -384,8 +409,8 @@ public String showEditForm(@RequestParam int id, Model model) {
     }
 
  
-    @GetMapping("/userRequests")
-public String showUserRequests(Model model, Principal principal) {
+    @GetMapping("/Graph")
+public String Graph(Model model, Principal principal) {
     String username = principal.getName();
     User currentUser = userRepository.findByEmail(username);
     
@@ -401,7 +426,7 @@ public String showUserRequests(Model model, Principal principal) {
     model.addAttribute("requests", userRequests);
     model.addAttribute("requestCountsPerDay", requestCountsPerDay);
     model.addAttribute("requestCountsByResponse", requestCountsByResponse);
-    
+
     // تحضير البيانات للرسم البياني
     List<String> labels = requestCountsPerDay.stream()
             .map(map -> map.get("date") != null ? map.get("date").toString() : "")
@@ -424,7 +449,20 @@ public String showUserRequests(Model model, Principal principal) {
     model.addAttribute("responseLabels", responseLabels);
     model.addAttribute("responseData", responseData);
 
-    return "home"; // Ensure this matches your Thymeleaf template name
+    return "Graph" ; // Ensure this matches your Thymeleaf template name
 }
+@GetMapping("/search")
+public String searchRequests(@RequestParam("keyword") String keyword, Model model, Principal principal) {
+    String username = principal.getName();
+    User currentUser = userRepository.findByEmail(username);
+    
+    // Search for requests by the current user that match the keyword in the description
+    List<RequestEntity> searchResults = requestRepo.findByUsersAndDescriptionContainingIgnoreCase(currentUser, keyword);
+    model.addAttribute("requests", searchResults);
+    model.addAttribute("searchKeyword", keyword);
+
+    return "userRequest"; // Ensure this matches your Thymeleaf template name
+}
+
 
 }

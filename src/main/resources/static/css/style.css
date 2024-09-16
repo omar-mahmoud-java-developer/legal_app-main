@@ -1,177 +1,179 @@
-/* Resetting default styles */
-* {
+/* CSS file: style.css */
+
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    background-color: #f4f4f4;
+    color: #333;
+    overflow-x: hidden;
 }
 
-body {
-    background-image: url("b2.jpg");
-    background-size: cover;
-    background-position: center;
-    font-family: 'Helvetica Neue', Arial, sans-serif; /* Updated font for modern look */
-    background-color: #F5F5F5; /* Cool White for background */
-    line-height: 1.6;
-    color: #333333; /* Charcoal Gray for primary text */
-    padding: 0px;
-}
-
-/* Header Styles */
 header {
-    background-color: #333333;  /* Charcoal Gray for header */
-    color: #fff;
-    padding: 20px;
+    background: linear-gradient(90deg, rgba(15,15,15,1) 0%, rgba(44,62,80,1) 36%, rgba(0,212,255,1) 100%);
+    color: white;
+    padding: 20px 0;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    animation: fadeInDown 1s ease-in-out;
 }
 
-/* Main Content Styles */
+h1 {
+    margin: 0;
+    font-size: 2.5em;
+    letter-spacing: 1.5px;
+}
+
 main {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    min-height: calc(100vh - 160px); /* Ensures main content covers full viewport height minus header and footer */
-}
-
-/* Hero Section Styles */
-.hero {
-    height: 55vh; /* Adjust as needed */
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    min-height: 100vh;
+}
+
+/* Hero Section */
+.hero {
+    background-color: #fff;
+    padding: 100px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    color: #fff;
+    max-width: 600px;
+    margin-top: 50px;
+    animation: fadeInUp 1s ease-in-out;
+    z-index: 10;
+    position: relative;
 }
 
 .hero h2 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+    font-size: 2em;
+    margin-bottom: 10px;
 }
 
 .hero p {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 20px;
 }
 
-/* Button Styles */
-.btn {
+.hero .btn {
     display: inline-block;
-    background-color: #1E90FF; /* Electric Blue for buttons */
-    color: #fff;
-    padding: 15px 30px;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, rgba(15,15,15,1) 0%, rgba(44,62,80,1) 36%, rgba(0,212,255,1) 100%);
+    color: white;
     border-radius: 5px;
     text-decoration: none;
-    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    font-size: 1.1em;
+    transition: transform 0.3s, background-color 0.3s;
 }
 
-.btn:hover {
-    background-color: #1A78D1; /* Slightly darker Electric Blue on hover */
-    transform: translateY(-2px); /* Adds a subtle lift on hover */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds shadow on hover for depth */
+.hero .btn:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
 }
 
-/* Footer Styles */
-footer {
-    background-color: #333333;  /* Charcoal Gray for footer */
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    bottom: 0;
+/* Parallax Layers */
+.parallax-layer {
+    position: absolute;
+    top: 0;
     left: 0;
     width: 100%;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3); /* Adds shadow for footer elevation */
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
 }
 
-/* Form Styles */
-input[type="text"],
-input[type="password"],
-input[type="email"],
-textarea {
+#layer1 {
+    background-image: url('images/layer1.png'); /* Replace with your image */
+    opacity: 0.4;
+    data-speed: 0.1;
+}
+
+#layer2 {
+    background-image: url('images/layer2.png'); /* Replace with your image */
+    opacity: 0.6;
+    data-speed: 0.3;
+}
+
+#layer3 {
+    background-image: url('images/layer3.png'); /* Replace with your image */
+    opacity: 0.8;
+    data-speed: 0.5;
+}
+
+/* Company Stats Section */
+.stats {
+    display: flex;
+    justify-content: space-around;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0 20px 0;
-    border: 1px solid #D3D3D3; /* Light Gray for input fields */
-    border-radius: 5px;
-    background-color: #F5F5F5; /* Cool White for input background */
-    color: #333333; /* Charcoal Gray for input text */
+    max-width: 800px;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 1.2s ease-in-out;
 }
 
-input[type="submit"] {
-    background-color: #1E90FF; /* Electric Blue for submit button */
-    color: #fff;
-    border: none;
-    padding: 15px 20px;
-    cursor: pointer;
-    border-radius: 5px;
+.stat-item {
+    text-align: center;
 }
 
-input[type="submit"]:hover {
-    background-color: #1A78D1; /* Slightly darker Electric Blue on hover */
+.stat-item .counter {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #00d4ff;
 }
 
-/* Link Styles */
-a {
-    color: #008080; /* Urban Teal for links */
-    text-decoration: none;
+.stat-item p {
+    font-size: 1.2em;
+    color: #666;
 }
 
-a:hover {
-    text-decoration: underline;
+/* Particle Canvas */
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
-/* Table Styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
+/* Keyframes for animations */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-table th,
-table td {
-    padding: 12px 15px;
-    border: 1px solid #D3D3D3; /* Light Gray for table borders */
-    text-align: left;
-    color: #708090; /* Slate Gray for table text */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-table th {
-    background-color: #333333; /* Charcoal Gray for table headers */
-    color: #fff;
-}
-
-table tr:nth-child(even) {
-    background-color: #F5F5F5; /* Cool White for even rows */
-}
-
-table tr:nth-child(odd) {
-    background-color: #D3D3D3; /* Light Gray for odd rows */
-}
-
-/* Media Queries for Responsiveness */
+/* Responsive Design */
 @media (max-width: 768px) {
-    .hero h2 {
-        font-size: 2.5rem;
+    .hero, .stats {
+        padding: 20px;
+        max-width: 90%;
     }
-    .hero p {
-        font-size: 1.2rem;
-    }
-    .btn {
-        padding: 12px 24px;
-    }
-}
 
-@media (max-width: 480px) {
+    header {
+        padding: 10px 0;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
     .hero h2 {
-        font-size: 2rem;
+        font-size: 1.5em;
     }
-    .hero p {
-        font-size: 1rem;
+
+    .hero p, .stat-item p {
+        font-size: 1em;
     }
-    .btn {
-        padding: 10px 20px;
+
+    .hero .btn {
+        font-size: 1em;
     }
 }

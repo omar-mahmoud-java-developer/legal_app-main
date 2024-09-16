@@ -15,7 +15,12 @@
         <p><strong>Files:</strong></p>
         <ul>
             <li th:each="file : ${request.fileNames}" th:text="${file}"></li>
+            
         </ul>
+        <div class="table-cell actions-cell">
+            <a class="btn link-download" th:href="@{/request/download(folderName=${request.folderName})}">Download</a>
+        </div>
+ 
     </div>
     <h2>Details</h2>
     <table>
@@ -40,6 +45,7 @@
             </tr>
         </tbody>
     </table>
+
     <a href="/request/list">Back to List</a>
 </body>
 </html>

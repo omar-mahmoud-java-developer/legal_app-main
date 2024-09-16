@@ -44,6 +44,7 @@ public class UserController {
 	public String userPage (Model model, Principal principal) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
 		model.addAttribute("user", userDetails);
+		
 		return "UserWellcom";
 	}
 	

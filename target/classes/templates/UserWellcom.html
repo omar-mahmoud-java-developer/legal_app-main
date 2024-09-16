@@ -5,17 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Our Web App</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" th:href="@{../css/Handf.css}">
-    <script>
-        // Redirect to userrequest after 5 seconds
-        setTimeout(function() {
-            window.location.href = "/request/list";
-        }, 2000);
-    </script>
+
+    <script src="https://cdn.jsdelivr.net/gh/Prographer/p5js/p5.min.js"></script> <!-- For Particle Animation -->
 </head>
 <body>
 
-    <div class="image-background"></div>
     <header>
         <h1>ERC Web App</h1>
     </header>
@@ -25,7 +19,63 @@
             <p>Explore our new features and make the most out of your experience.</p>
             <a href="/request/list" class="btn">Get Started</a>
         </section>
+
+ 
+        
+        
+        
+
+    
     </main>
 
+    <script>
+        // 3D Parallax Effect
+        document.addEventListener('scroll', function () {
+            const layers = document.querySelectorAll('.parallax-layer');
+            layers.forEach(layer => {
+                const speed = layer.getAttribute('data-speed');
+                const yPos = window.scrollY * speed;
+                layer.style.transform = `translateY(${yPos}px)`;
+            });
+        });
+
+        // Animated Counter
+        document.addEventListener('DOMContentLoaded', function () {
+            const counters = document.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const updateCounter = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const increment = target / 200;
+
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + increment);
+                        setTimeout(updateCounter, 10);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCounter();
+            });
+        });
+
+        // Particle Animation
+        function setup() {
+            let canvas = createCanvas(windowWidth, windowHeight);
+            canvas.parent('particleCanvas');
+            canvas.position(0, 0);
+            canvas.style('z-index', '-1');
+            noStroke();
+        }
+
+        function draw() {
+            background(15, 15, 15, 25);
+            let x = random(width);
+            let y = random(height);
+            let d = random(2, 8);
+            fill(0, 212, 255, 100);
+            ellipse(x, y, d, d);
+        }
+    </script>
 </body>
 </html>

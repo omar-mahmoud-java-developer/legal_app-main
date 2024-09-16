@@ -16,145 +16,157 @@
 
     <div th:replace="header.html :: header"></div>
 
-    <div class="content">
-        <table class="request-table table table-striped">
-            <thead>
-                <tr>
-                    <th class="table-header">ID</th>
-                    <th class="table-header">Description</th>
-                    <th class="table-header">Request Date</th>
-                    <th class="table-header">Response Date</th>
-                    <th class="table-header">Response</th>
-                    <th class="table-header">Comments</th>
-                    <th class="table-header">File Names</th>
-                    <th class="table-header">Customer Details</th>
-                    <th class="table-header">Request Details</th>
-                    <th class="table-header">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="request : ${requests}">
-                    <td class="table-cell" th:text="${request.id}"></td>
-                    <td class="table-cell" th:text="${request.description}"></td>
-                    <td class="table-cell" th:text="${#dates.format(request.requestDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                    <td class="table-cell" th:text="${#dates.format(request.responseDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
-                    <td class="table-cell" th:text="${request.response}"></td>
-                    <td class="table-cell">
-                        <ul>
-                            <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
-                        </ul>
-                    </td>
-                    <td class="table-cell">
-                        <ul>
-                            <li th:each="fileName : ${request.fileNames}" th:text="${fileName}"></li>
-                        </ul>
-                    </td>
-                    <td class="table-cell">
-                        <button class="btn btn-info" th:data-toggle="modal" th:data-target="'#customerDetailsModal'" th:data-customer-id="${request.customer.id}">
-                            Customer Detail
+
+        <div class="content">
+       
+                <form th:action="@{/request/search}" method="get" class="form-inline mb-3">
+                    <div class="search">
+                    <input type="text" name="keyword" class="form-control mr-sm-2" placeholder="Search by description" 
+                           th:value="${searchKeyword}" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </div>
+                </form>
+          
+            <table class="request-table table table-striped">
+                <thead>
+                    <tr>
+                        <th class="table-header">ID</th>
+                        <th class="table-header">Description</th>
+                        <th class="table-header">Request Date</th>
+                        <th class="table-header">Response Date</th>
+                        <th class="table-header">Response</th>
+                        <th class="table-header">Comments</th>
+                        <th class="table-header">File Names</th>
+                        <th class="table-header">Customer Details</th>
+                        <th class="table-header">Request Details</th>
+                        <th class="table-header">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="request : ${requests}">
+                        <td class="table-cell" th:text="${request.id}"></td>
+                        <td class="table-cell" th:text="${request.description}"></td>
+                        <td class="table-cell" th:text="${#dates.format(request.requestDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                        <td class="table-cell" th:text="${#dates.format(request.responseDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+                        <td class="table-cell" th:text="${request.response}"></td>
+                        <td class="table-cell">
+                            <ul>
+                                <li th:each="comment : ${request.comments}" th:text="${comment.comments}"></li>
+                            </ul>
+                        </td>
+                        <td class="table-cell">
+                            <ul>
+                                <li th:each="fileName : ${request.fileNames}" th:text="${fileName}"></li>
+                            </ul>
+                        </td>
+                        <td class="table-cell">
+                            <button class="btn btn-info" th:data-toggle="modal" th:data-target="'#customerDetailsModal'" th:data-customer-id="${request.customer.id}">                                Customer Detail
+                            </button>
+                        </td>
+                        
+                        <td class="table-cell">
+                            <a class="btn btn-info" th:href="@{/request/details/{id}(id=${request.id})}">Request Detail</a>
+                        </td>
+                        <td class="table-cell actions-cell">
+                            <div th:if="${request.response != T(com.omar.legal_app.dto.Response).COMPLETED}">
+                                <a class="action-link edit-link" th:href="@{/request/edit(id=${request.id})}">Edit</a>
+                                <a class="action-link delete-link" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Customer Details Modal -->
+        <div class="modal fade" id="customerDetailsModal" tabindex="-1" role="dialog" aria-labelledby="customerDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="customerDetailsModalLabel">Customer Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
-                    </td>
-                    <td class="table-cell">
-                        <a  class="btn btn-info" th:href="@{/request/details/{id}(id=${request.id})}">Request Detail</a>
-                </td>
-                    <td class="table-cell actions-cell">
-                        <div th:if="${request.response != T(com.omar.legal_app.dto.Response).COMPLETED}">
-                            <a class="action-link edit-link" th:href="@{/request/edit(id=${request.id})}">Edit</a>
-                            <a class="action-link delete-link" th:href="@{/request/delete(id=${request.id})}" onclick="return confirm('Are you sure?')">Delete</a>
-                        </div>
-
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Customer Details Modal -->
-    <div class="modal fade" id="customerDetailsModal" tabindex="-1" role="dialog" aria-labelledby="customerDetailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="customerDetailsModalLabel">Customer Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Customer details will be loaded here via AJAX -->
-                    <p><strong>Name:</strong> <span id="customerName"></span></p>
-                    <p><strong>Email:</strong> <span id="customerEmail"></span></p>
-                    <p><strong>Phone:</strong> <span id="customerPhone"></span></p>
-                    <p><strong>ID National:</strong> <span id="customerIdNational"></span></p>
-                    <p><strong>Company:</strong> <span id="customerCompany"></span></p>
-                    <p><strong>Address:</strong> <span id="customerAddress"></span></p>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Customer details will be loaded here via AJAX -->
+                        <p><strong>Name:</strong> <span id="customerName"></span></p>
+                        <p><strong>Email:</strong> <span id="customerEmail"></span></p>
+                        <p><strong>Phone:</strong> <span id="customerPhone"></span></p>
+                        <p><strong>ID National:</strong> <span id="customerIdNational"></span></p>
+                        <p><strong>Company:</strong> <span id="customerCompany"></span></p>
+                        <p><strong>Address:</strong> <span id="customerAddress"></span></p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Request Details Modal -->
-    <div class="modal fade" id="requestDetailsModal" tabindex="-1" role="dialog" aria-labelledby="requestDetailsModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="requestDetailsModalLabel">Request Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Request details will be loaded here via AJAX -->
-                    
-                    <p><strong>Priority Level:</strong> <span id="requestPriorityLevel"></span></p>
-                    <p><strong>Case Type:</strong> <span id="requestCaseType"></span></p>
-                    <p><strong>Start Date:</strong> <span id="requestStartDate"></span></p>
-                    <p><strong>End Date:</strong> <span id="requestEndDate"></span></p>
+        <!-- Request Details Modal -->
+        <div class="modal fade" id="requestDetailsModal" tabindex="-1" role="dialog" aria-labelledby="requestDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="requestDetailsModalLabel">Request Details</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Request details will be loaded here via AJAX -->
+                        <p><strong>Priority Level:</strong> <span id="requestPriorityLevel"></span></p>
+                        <p><strong>Case Type:</strong> <span id="requestCaseType"></span></p>
+                        <p><strong>Start Date:</strong> <span id="requestStartDate"></span></p>
+                        <p><strong>End Date:</strong> <span id="requestEndDate"></span></p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-   
+
         <script>
-        $('#customerDetailsModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var customerId = button.data('customer-id');
+            $('#customerDetailsModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var customerId = button.data('customer-id');
 
-            $.ajax({
-                url: '/request/customerDetails',
-                method: 'GET',
-                data: { customerId: customerId },
-                success: function(data) {
-                    $('#customerName').text(data.name);
-                    $('#customerEmail').text(data.email);
-                    $('#customerPhone').text(data.phone);
-                    $('#customerIdNational').text(data.idNational);
-                    $('#customerCompany').text(data.company);
-                    $('#customerAddress').text(data.address);
-                },
-                error: function() {
-                    alert('Failed to load customer details.');
-                }
+                $.ajax({
+                    url: '/request/customerDetails',
+                    method: 'GET',
+                    data: { customerId: customerId },
+                    success: function(data) {
+                        $('#customerName').text(data.name);
+                        $('#customerEmail').text(data.email);
+                        $('#customerPhone').text(data.phone);
+                        $('#customerIdNational').text(data.idNational);
+                        $('#customerCompany').text(data.company);
+                        $('#customerAddress').text(data.address);
+                    },
+                    error: function() {
+                        alert('Failed to load customer details.');
+                    }
+                });
             });
-        });
 
-        $('#requestDetailsModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget);
-            var requestId = button.data('request-id');
+            $('#requestDetailsModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var requestId = button.data('request-id');
 
-            $.ajax({
-                url: '/request/details',
-                method: 'GET',
-                data: { requestId: requestId },
-                success: function(data) {
-                    $('#requestPriorityLevel').text(data.priorityLevel);
-                    $('#requestCaseType').text(data.cases);
-                    $('#requestStartDate').text(data.startDate);
-                    $('#requestEndDate').text(data.endDate);
-                },
-                error: function() {
-                    alert('Failed to load request details.');
-                }
+                $.ajax({
+                    url: '/request/details',
+                    method: 'GET',
+                    data: { requestId: requestId },
+                    success: function(data) {
+                        $('#requestPriorityLevel').text(data.priorityLevel);
+                        $('#requestCaseType').text(data.cases);
+                        $('#requestStartDate').text(data.startDate);
+                        $('#requestEndDate').text(data.endDate);
+                    },
+                    error: function() {
+                        alert('Failed to load request details.');
+                    }
+                });
             });
-        });
-    </script>
+
+            
+        </script>
+    </div>
 </body>
 </html>
